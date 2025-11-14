@@ -11,6 +11,14 @@ header {
     align-items: center;
     justify-content: space-around;
     color: rgb(84, 84, 84);
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    background-color:white;
+    z-index: 1000;
+    border-radius: 0 0 50px 50px ;  
+    box-shadow: 0px 20px 50px 20px rgba(69, 69, 69, 0.197);
 }
 
 .logo {
@@ -56,6 +64,8 @@ header {
         padding: 0;
         transition: all 400ms;
         background-color: rgb(84, 84, 84);
+        margin-bottom:20%;
+        
     }
 
     .navlink a {
@@ -71,6 +81,8 @@ header {
     .nav-active {
         right: 0;
     }
+
+
 }
 
 .hero-section {
@@ -82,6 +94,7 @@ header {
     overflow: hidden;  
     margin-left:10px;
     margin-right: 10px;
+    margin-top:7%;
 }
 
 .hero-content {
@@ -95,7 +108,7 @@ header {
 
 .hero-left {
     flex: 1;
-    transform: translateX(-10%);
+    transform: translateX(25%);
 }
 
 .hero-title-h1 {
@@ -151,33 +164,52 @@ header {
 @media (max-width: 768px) {
     .hero-content {
         flex-direction: column;
-        gap: 20px;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 5%;
         text-align: center;
-    }
-
-    .hero-right {
-        width: 100%;
-        height: auto;
-        margin-top: 20px;
+        margin-top:20%;
     }
 
     .circle-bg {
-        width: 70%;
+        display: none;
+    }
+
+    .hero-right {
+        transform: translateX(0) translateY(-15%);
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .hero-phone {
-        width: 55%;
+        width: 100%;  
+        max-width: 500px; 
+        height: auto;
+        padding:10%;
+    }
+
+    .hero-left {
+        transform: translateX(0);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
     .hero-title-h1,
-    .hero-title-h1-2 {
-        font-size: 3rem;
-    }
-
+    .hero-title-h1-2,
     .hero-title-h2 {
-        font-size: 1.5rem;
+        transform: none;
+        white-space: normal;
+        text-align: center;
+        padding: 0;
+        font-size: clamp(2.8rem, 6vw, 2.5rem);
+        max-width: 100%;
     }
 }
+
 
 .about-section {
     height: 100vh;
@@ -198,7 +230,7 @@ header {
 }
 
 .about-title {
-    text-align: left;
+    text-align: center;
     margin-top:5%;
     margin-bottom:0;
 }
@@ -212,7 +244,7 @@ header {
 
 .hero-title-h1-3 {
     font-size: clamp(3.5rem, 3vw, 7rem);
-    color: rgb(51, 51, 51);
+    color: rgb(82, 81, 81);
     margin: 0;
     white-space: nowrap;
 }
@@ -236,11 +268,30 @@ header {
     padding: 20px;
 }
 
-.goal-round {
+.goal-round-1{
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background-color: #9e9e9e;
+    background-image: url('../brainstorming images/target (1).png');
+    background-size: cover; 
+    background-repeat: no-repeat;
+}
+
+.goal-round-2{
+    width: 90px;
+    height: 100px;
+    border-radius: 50%;
+    background-image:url('../brainstorming images/work-in-progress.png');
+    background-size:contain; 
+    background-repeat: no-repeat;
+}
+.goal-round-3{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-image:url('../brainstorming images/sport.png');
+    background-size:contain; 
+    background-repeat: no-repeat;
 }
 
 .goal-title {
@@ -285,6 +336,7 @@ header {
     }
 }
 
+
 .hero-left-1 {
     display: flex;
     justify-content: center;
@@ -298,22 +350,35 @@ header {
     position: absolute;
     width: 100%;
     aspect-ratio: 1/1;
-    background-image: radial-gradient(circle, rgb(190, 190, 190), rgba(248, 247, 247, 0.359), white);
+    background-image: radial-gradient(circle, rgb(190, 190, 190), rgba(254, 253, 253, 0.111), white);
     border-radius: 50%;
     z-index: 1;
     top:15%;
-    transform: translateX(-10%) translateY(-10%);
+    transform: translateX(-10%) translateY(-15%);
+}
+@media (max-width: 768px) {
+    .circle-bg-1 {
+        display: none;
+    }
+
+    .hero-left-1 img {
+        display: none;
+    }
+    .hero-left-2{
+        align-items:center;
+        justify-content: space-between;
+        text-align:center;
+        margin: 20px;
+        
+    }
+
+
 }
 
 .logger-section {
-    background-color: rgb(255, 255, 255);
-    height: 90vh;
-    display: flex;
-    align-items: center;
-    border-radius: 50px;   
-    overflow: hidden;  
     margin-left:10px;
     margin-right: 10px;
+    padding:0 6%;
 }
 
 .logger-content {
@@ -322,5 +387,114 @@ header {
     align-items: center;
     width: 100%;
     height: 100%;
-    padding: 0 5%;
+    overflow: hidden;  
+
+}
+
+.logger-header{
+    color:rgb(235, 85, 85);
+    margin:2px
+    }
+
+.goal2 p{
+    color:rgb(70, 70, 70);
+    margin:0;
+    padding:0;
+}
+
+.logger-title{
+    color:rgb(38, 38, 38);
+
+}
+
+.footer {
+    background-color:#817f7f;
+    padding: 2rem 0;
+    border-radius:50px 50px 0 0;  
+}
+
+.footer-content{
+    align-items:center;
+    padding: 0 1rem;
+    text-align:center;
+
+}
+
+.footer-section{
+    margin-bottom:1rem;
+
+}
+
+.footer-section-title{
+    color:#55ebf3;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+.footer-links-title{
+    color:#eccfcf;
+}
+
+.contact-info{
+    color: #fff;
+    justify-content:center;
+    gap:2rem;
+    flex-wrap:wrap;
+}
+
+.footer-links{
+    display:flex;
+    justify-content:center;
+    gap: clamp(1rem, 2.5vw, 2.5rem);
+    flex-wrap: wrap;
+    margin-top:1rem
+}
+
+.footer-links a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+.copyright{
+    margin-top: 2rem;
+    padding-top: 2rem;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+
+.btn {
+    width: 100%;
+    display: flex;
+    justify-content: center; 
+    margin-top: 40px;
+}
+
+.btn button {
+    background-color: rgba(57, 2, 184, 0);
+    color: #3802b8;
+    font-size: 1.2rem;
+    padding: 12px 28px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;  
+    margin-bottom:20px;
+    transition: 0.3s ease;
+    border:2px solid #3802b8;
+}
+
+.btn button .arrow {
+    font-size: 1.5rem;
+    transition: 0.3s ease;
+}
+
+.btn button:hover .arrow {
+    transform: translateX(5px); }
+
+.btn button:hover {
+    background-color:#9a9a9a1d;
 }

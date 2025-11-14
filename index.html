@@ -11,13 +11,12 @@
 <body>
 
 <header>
-    <h1 class="logo">Logo</h1>
-
+    <h1 class="logo">BinGo</h1>
     <ul class="nav">
         <li class="navlink"><a href="#">Home</a></li>
-        <li class="navlink"><a href="#">About</a></li>
-        <li class="navlink"><a href="#">Logger</a></li>
-        <li class="navlink"><a href="#">Contacts</a></li>
+        <li class="navlink"><a href="#about">About</a></li>
+        <li class="navlink"><a href="#logger">Logger</a></li>
+        <li class="navlink"><a href="#footer">Contacts</a></li>
     </ul>
 
     <div class="burger">
@@ -25,7 +24,7 @@
     </div>
 </header>
 
-<section class="hero-section">
+<section class="hero-section" id="hero">
 
     <div class="hero-content">
 
@@ -44,7 +43,7 @@
 
 </section>
 
-<section class="about-section">
+<section class="about-section" id="about">
 
     <div class="about-content">
         <div class="about-title">
@@ -55,19 +54,20 @@
         
         <div class="health-journey-container">
             <div class="goal1">
-                <div class="goal-round"></div>
+                <div class="goal-round-1">
+                </div>
                 <h1 class="goal-title">Set Goal</h1>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga excepturi architecto ducimus a.</p>
             </div>
             
             <div class="goal1">
-                <div class="goal-round"></div>
+                <div class="goal-round-2"></div>
                 <h1 class="goal-title">Track Progress</h1>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga excepturi architecto ducimus a.</p>
             </div>
             
             <div class="goal1">
-                <div class="goal-round"></div>
+                <div class="goal-round-3"></div>
                 <h1 class="goal-title">Achieve Results</h1>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga excepturi architecto ducimus a.</p>
             </div>
@@ -76,16 +76,71 @@
     
 </section>
 
-<section class="logger-section">
+<section class="logger-section" id="logger">
 
     <div class="logger-content">
         <div class="hero-left-1">
             <div class="circle-bg-1"></div>
             <img class="hero-phone" src="./client/brainstorming images/stats.png" alt="Phone">
         </div>
-    </div>
+        
+         <div class="hero-left-2">
+            <div class="goal2">
+                <h1 class="logger-title">Lorem ipsum dolor sit amet consectetur.</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga excepturi architecto ducimus a.</p>
+            </div>
+            <div class="goal2">
+                <h1 class="logger-header">Sleep</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga excepturi architecto ducimus a.</p>
+            </div>
+            <div class="goal2">
+                <h1 class="logger-header">Exercise</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga excepturi architecto ducimus a.</p>
+            </div>
+            <div class="goal2">
+                <h1 class="logger-header">Nutrition</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga excepturi architecto ducimus a.</p>
+            </div>
+                        <div class="goal2">
+                <h1 class="logger-header">Nutrition</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga excepturi architecto ducimus a.</p>
+            </div>            
+        </div>
 
+    </div>
+    <div class="btn">
+        <button>View More <span class="arrow">→</span></button>
+    </div>
 </section>
+    <footer class="footer" id="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-section-title">Contact Us</h3>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span>support@BinGo.com</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-links-title">Quick Links</h3>
+                <div class="footer-links">
+                    <a href="#">Home</a>
+                    <a href="#">About</a>
+                    <a href="#">Logger</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>&copy; 2025 BinGo Track. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
 
 <script src="./client/scripts/script.js"></script>
 
