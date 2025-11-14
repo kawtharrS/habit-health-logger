@@ -5,16 +5,16 @@ class Habit extends Model {
     private int $id;
     private int $user_id;
     private string $habit_name;
-    private string $create_at;
+    private string $created_at;
 
 
-    protected static string $table = "users";
+    protected static string $table = "habits";
 
     public function __construct(array $data){
         $this->id = $data["id"];
         $this->user_id = $data["user_id"];
         $this->name = $data["habit_name"];
-        $this->create_at=$data["created_at"];
+        $this->created_at=$data["created_at"];
 
     }
 
@@ -40,10 +40,10 @@ class Habit extends Model {
     }
     public function setCreatedAt(string $created_at)
     {
-        $this->create_at = $created_at;
+        $this->created_at = $created_at;
     }
     public function getCreatedAt(){
-        return $this->create_at;
+        return $this->created_at;
     }
 
 
