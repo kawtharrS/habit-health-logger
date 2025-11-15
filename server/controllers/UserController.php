@@ -6,6 +6,7 @@ require_once(__DIR__ . '/../services/ResponseService.php');
 class UserController{
     function getUserById(){
     global $connection;
+    
     if(isset($_GET["id"])){
         $id = $_GET["id"];
     }
@@ -51,7 +52,7 @@ class UserController{
     function deleteUser() {
         global $connection;
 
-        $data = json_decode(file_get_contents("php://input"), true);
+        $data = json_decode(file_get_contents("php://input"), associative: true);
 
         if (empty($data["id"])) {
             echo ResponseService::response(400, "Missing Id");
