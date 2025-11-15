@@ -1,0 +1,110 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+}
+
+.login-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+}
+
+.imgcontainer {
+    text-align: center;
+}
+
+img.avatar {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.login-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 4px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.password-container {
+    position: relative;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+
+}
+
+.login-btn {
+    background-color: #3802b8;
+    color: white;
+}
+
+.login-btn:hover {
+    background-color: #2d0191;
+}
+
+.cancelbtn {
+    background-color: #f44336;
+    color: white;
+}
+
+.cancelbtn a{
+    text-decoration:none;
+    color:white;
+}
+
+.cancelbtn:hover {
+    background-color: #d32f2f;
+}
+
+
+@media screen and (max-width: 480px) {
+    .login-container {
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+}
