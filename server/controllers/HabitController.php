@@ -79,24 +79,25 @@ class HabitController{
     function updateHabit() {
         global $connection;
 
-        if (empty($_POST["id"])) {
-            return ResponseService::response(400, "ID is required");
+        $input = $_POST;
+        if (empty($input)) {
+            $input = json_decode(file_get_contents("php://input"), true);
         }
 
         $data = [];
-        $id = $_POST["id"];
+        $id = $input["id"];
 
-        if (!empty($_POST["habit_name"])) {
-            $data["habit_name"] = $_POST["habit_name"];
+        if (!empty($input["habit_name"])) {
+            $data["habit_name"] = $input["habit_name"];
         }
-        if (!empty($_POST["unit"])) {
-            $data["unit"] = $_POST["unit"];
+        if (!empty($input["unit"])) {
+            $data["unit"] = $input["unit"];
         }
-        if (!empty($_POST["target_value"])) {
-            $data["target_value"] = $_POST["target_value"];
+        if (!empty($input["target_value"])) {
+            $data["target_value"] = $input["target_value"];
         }
-        if (!empty($_POST["is_active"])) {
-            $data["is_active"] = $_POST["is_active"];
+        if (!empty($input["is_active"])) {
+            $data["is_active"] = $input["is_active"];
         }
 
         if (empty($data)) {
