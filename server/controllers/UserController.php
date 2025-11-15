@@ -44,6 +44,7 @@ class UserController{
             return ResponseService::response(400, "Missing required Fields");
         }
 
+        $input["password"] = password_hash($input["password"], PASSWORD_ARGON2I );
         $data = [
             'name' => $input["name"], 
             'email' => $input["email"], 
