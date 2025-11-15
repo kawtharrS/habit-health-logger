@@ -5,6 +5,9 @@ class Habit extends Model {
     private int $id;
     private int $user_id;
     private string $habit_name;
+    private string $unit;
+    private ?float $target_value;
+    private int $is_active;
     private string $created_at;
 
 
@@ -14,6 +17,9 @@ class Habit extends Model {
         $this->id = $data["id"];
         $this->user_id = $data["user_id"];
         $this->name = $data["habit_name"];
+        $this->unit = $data["unit"];
+        $this->target_value=$data["target_value"];
+        $this->is_active=$data["is_active"];
         $this->created_at=$data["created_at"];
 
     }
@@ -38,6 +44,30 @@ class Habit extends Model {
     public function getHabitName(){
         return $this->habit_name;
     }
+
+    public function setUnit(string $unit)
+    {
+        $this->unit = $unit;
+    }
+    public function getUnit()
+    {
+        return $this->unit;
+    }
+
+    public function setTargetValue(float $target_value){
+        $this->target_value = $target_value;
+    }
+    public function getTargetValue(){
+        return $this->target_value;
+    }
+
+    public function setIsActive(int $is_active){
+        $this->is_active=$is_active;
+    }
+    public function getIsActive(){
+        return $this->is_active;
+    }
+
     public function setCreatedAt(string $created_at)
     {
         $this->created_at = $created_at;
