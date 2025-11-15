@@ -70,7 +70,8 @@ abstract class Model{
         $sql = sprintf("DELETE FROM %s WHERE %s = ?", static::$table, $primary_key);
         $query = $connection->prepare($sql);
         $query->bind_param('s', $id);
-        if($query->execute())
+        $query->execute();
+        if($query->affected_rows >0)
         {
             return true;
         }
