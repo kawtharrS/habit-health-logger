@@ -9,7 +9,7 @@ $sql = "CREATE TABLE IF NOT EXISTS habits(
         target_value DECIMAL(6,2) DEFAULT NULL,
         is_active TINYINT(1) NOT NULL DEFAULT 1,
         create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(id),)";
+        FOREIGN KEY (user_id) REFERENCES users(id))";
 
 $query = $connection->prepare($sql);
 $query->execute();
