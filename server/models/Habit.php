@@ -16,11 +16,11 @@ class Habit extends Model {
     public function __construct(array $data){
         $this->id = $data["id"];
         $this->user_id = $data["user_id"];
-        $this->name = $data["habit_name"];
+        $this->habit_name = $data["habit_name"];
         $this->unit = $data["unit"];
         $this->target_value=$data["target_value"];
         $this->is_active=$data["is_active"];
-        $this->created_at=$data["created_at"];
+        $this->created_at = $data["created_at"] ?? date('Y-m-d H:i:s');
 
     }
 
@@ -78,12 +78,26 @@ class Habit extends Model {
 
 
 
-    public function __toString(){
-        return $this->id . " | " . $this->user_id . " | " .$this->habit_name . " | " . $this->created_at;
+    public function __toString(): string {
+        return $this->id . " | " 
+            . $this->user_id . " | " 
+            . $this->habit_name . " | " 
+            . $this->unit . " | " 
+            . ($this->target_value ?? 'NULL') . " | " 
+            . $this->is_active . " | " 
+            . $this->created_at;
     }
-    
-    public function toArray(){
-        return ["id" => $this->id, "user_id" =>$this->user_id ,"habit_name" => $this->habit_name, "created_at" => $this->created_at ];
+
+    public function toArray(): array {
+        return [
+            "id" => $this->id,
+            "user_id" => $this->user_id,
+            "habit_name" => $this->habit_name,
+            "unit" => $this->unit,
+            "target_value" => $this->target_value,
+            "is_active" => $this->is_active,
+            "created_at" => $this->created_at
+        ];
     }
 
 }

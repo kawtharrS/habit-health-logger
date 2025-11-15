@@ -34,15 +34,21 @@ class UserController{
     function insertUser(){
         global $connection;
 
-        if(!isset($_POST["name"],$_POST["email"],$_POST["password"],$_POST["role"])){
+        // Check if $_POST is empty (for JSON requests)
+        $input = $_POST;
+        if (empty($input)) {
+            $input = json_decode(file_get_contents("php://input"), true);
+        }
+
+        if(!isset($input["name"], $input["email"], $input["password"], $input["role"])){
             return ResponseService::response(400, "Missing required Fields");
         }
 
-        $data= [
-            'name'=>$_POST["name"], 
-            'email'=>$_POST["email"], 
-            'password'=>$_POST["password"],
-            'role'=>$_POST["role"]
+        $data = [
+            'name' => $input["name"], 
+            'email' => $input["email"], 
+            'password' => $input["password"],
+            'role' => $input["role"]
         ];
 
         $user = User::create($connection, $data);

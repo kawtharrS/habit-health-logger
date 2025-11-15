@@ -22,8 +22,6 @@ class Habit extends Model {
         $this->entry_date = $data["entry_date"];
         $this->raw_text = $data["raw_text"];
         $this->ai_response = $data["ai_response"] ?? null;
-        $this->created_at = $data["created_at"];
-        $this->updated_at = $data["updated_at"];
     }
 
     public function getID(): int {

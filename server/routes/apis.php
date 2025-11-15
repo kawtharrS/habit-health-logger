@@ -7,6 +7,12 @@ $apis = [
     '/users/create'         => ['controller' => 'UserController', 'method' => 'insertUser'],
     '/users/delete'         => ['controller' => 'UserController', 'method' => 'deleteUser'],
     '/users/update'         => ['controller' => 'UserController', 'method' => 'updateUser'],
+
+    '/habits/id'             => ['controller' => 'HabitController', 'method' => 'getHabitById'],
+    '/habits'                => ['controller' => 'HabitController', 'method' => 'getAllHabits'],
+    '/habits/create'         => ['controller' => 'HabitController', 'method' => 'insertHabit'],
+    '/habits/delete'         => ['controller' => 'HabitController', 'method' => 'deleteHabit'],
+    '/habits/update'         => ['controller' => 'HabitController', 'method' => 'updateHabit'],
 ];
 
 

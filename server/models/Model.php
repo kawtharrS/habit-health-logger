@@ -57,13 +57,15 @@ abstract class Model{
 
         $query = $connection->prepare($sql);
         $query->bind_param($types, ...$params);
-        if($query -> execute()){
-            $id= $connection->insert_id;
-            return new static (array_merge(["id"], $data));
 
+        if($query->execute()){
+            $id = $connection->insert_id;  
+            return new static(array_merge(["id" => $id], $data));  
         }
+
         return false;
     }
+
 
     public static function delete(mysqli $connection, string $id,  string $primary_key = "id")
     {
