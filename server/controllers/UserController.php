@@ -34,7 +34,7 @@ class UserController{
     function insertUser(){
         global $connection;
 
-        // Check if $_POST is empty (for JSON requests)
+    
         $input = $_POST;
         if (empty($input)) {
             $input = json_decode(file_get_contents("php://input"), true);

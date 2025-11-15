@@ -1,16 +1,15 @@
 <?php
 include("Model.php");
 
-class Habit extends Model {
+class Entry extends Model {
     private int $id;
     private int $user_id;
     private ?int $habit_id;
     private ?float $value;
-    private string $entry_date;
     private string $raw_text;
-    private ?string $ai_response;
-    private string $created_at;
-    private string $updated_at;
+    private string $ai_response;
+    private ?string $created_at;
+    private ?string $updated_at;
 
     protected static string $table = "entries";
 
@@ -19,9 +18,10 @@ class Habit extends Model {
         $this->user_id = $data["user_id"];
         $this->habit_id = $data["habit_id"] ?? null;
         $this->value = isset($data["value"]) ? (float)$data["value"] : null;
-        $this->entry_date = $data["entry_date"];
         $this->raw_text = $data["raw_text"];
         $this->ai_response = $data["ai_response"] ?? null;
+        $this->created_at = $data["created_at"];
+        $this->updated_at = $data["updated_at"];
     }
 
     public function getID(): int {
@@ -49,12 +49,6 @@ class Habit extends Model {
         $this->value = $value;
     }
 
-    public function getEntryDate(): string {
-        return $this->entry_date;
-    }
-    public function setEntryDate(string $entry_date): void {
-        $this->entry_date = $entry_date;
-    }
 
     public function getRawText(): string {
         return $this->raw_text;
@@ -80,7 +74,7 @@ class Habit extends Model {
 
     public function __toString(): string {
         return $this->id . " | " . $this->user_id . " | " . $this->habit_id . " | " . $this->value . 
-               " | " . $this->entry_date . " | " . $this->raw_text . " | " . $this->ai_response;
+               " | "  . $this->raw_text . " | " . $this->ai_response;
     }
 
     public function toArray(): array {
@@ -89,7 +83,6 @@ class Habit extends Model {
             "user_id" => $this->user_id,
             "habit_id" => $this->habit_id,
             "value" => $this->value,
-            "entry_date" => $this->entry_date,
             "raw_text" => $this->raw_text,
             "ai_response" => $this->ai_response,
             "created_at" => $this->created_at,
