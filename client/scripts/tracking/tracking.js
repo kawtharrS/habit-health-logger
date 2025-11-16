@@ -43,7 +43,7 @@ messageInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') sendMessage();
 });
 
-const URL_API = "http://localhost:8080/habit_and_health_logger/server/public/response.php";
+const URL_API = "http://localhost:8080/habit_and_health_logger/server/public/review.php";
 
 
 async function sendMessage() {
