@@ -22,6 +22,10 @@ $data = [
     "model" => "gpt-4o-mini",
     "input" => [
         [
+            "role" => "system",
+            "content" => "Act as a professional habit and health coach."
+        ],
+        [
             "role" => "user",
             "content" => $user_content
         ]
@@ -32,6 +36,7 @@ $data = [
         ]
     ]
 ];
+
 
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
