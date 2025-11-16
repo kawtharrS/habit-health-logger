@@ -198,11 +198,11 @@ header {
 }
 
 .container {
-  border: 2px solid #2d0191;
-  background-color: #f1f1f100;
+  background-color: #55ebf3;
   border-radius: 10px;
   padding: 10px;
   margin: 20px 0;
+  box-shadow:3px 5px 5px #bab9b959;
   
   
   
@@ -211,8 +211,7 @@ header {
     width:50%;
 }
 .darker {
-    border-color: #2d0191;
-    background-color: #dddddd90;
+    background-color: #ffffff;
     width: 50%;
     margin-left: auto; 
 }
@@ -258,7 +257,7 @@ header {
     display: flex;
     align-items: center;
     z-index: 1000;
-    border: 2px solid #2c01915f;
+    box-shadow:3px 5px 5px #bab9b959;
 
 
 }
@@ -295,12 +294,11 @@ header {
 
 .send-button i {
     font-size: 18px;
+    color:#fff;
 }
 
-/* Chat area with padding for input */
 .chat-area {
-    padding-bottom: 100px; /* Space for the fixed input */
-}
+    padding-bottom: 100px;}
 
 @media screen and (max-width: 1200px) {
     .message-input-container {
