@@ -1,3 +1,4 @@
+
 function openNav() {
   document.getElementById("mySidenav").style.width = "250px";
 }
@@ -36,18 +37,31 @@ function aiReply(){
   createMessage(reply, 'ai')
 }
 
-function sendMessage()
-{
-  const message = messageInput.value.trim();
-  if(message === '')return;
-  createMessage(message, 'user');
-  messageInput.value = '';
-  aiReply();
-}
-
 
 sendButton.addEventListener('click', sendMessage);
 messageInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') sendMessage();
 });
+
+const URL_API = "http://localhost:8080/habit_and_health_logger/server/public/response.php";
+
+
+async function sendMessage() {
+    const message = messageInput.value.trim();
+    if (message === '') return;
+
+    createMessage(message, 'user');
+    messageInput.value = '';
+
+    const response = await axios.post(
+        URL_API,
+        { message: message },
+        { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    createMessage(response.data.reply, 'ai');
+}
+
+
+
 
