@@ -9,12 +9,23 @@ const closePopup = document.getElementById("closePopup");
 const habitButtons = document.querySelectorAll(".habit-btn");
 const sendAllBtn = document.getElementById("sendAllHabits");
 const selectedList = document.getElementById("selectedList");
+const addHabit = document.getElementById("addHabit") ;
+const deleteHabit = document.getElementById("deleteHabit");
+const addHabitPopup = document.getElementById("addHabitPopup");
+const saveNewHabit = document.getElementById("saveNewHabit");
+const closeNewPopup= document.getElementById("closeNewPopup");
+const newHabitName= document.getElementById("newHabitName");
+const newHabitUnit= document.getElementById("newHabitUnit");
+const newHabitValue= document.getElementById("newHabitValue");
+const newHabitActive= document.getElementById("newHabitActive");
 
 const URL_API = "http://localhost:8080/habit_and_health_logger/server/public/review.php";
-
+const ADD_HABIT_URL = "http://localhost:8080/habit_and_health_logger/server/habits/create";
+const GET_URL = "http://localhost:8080/habit_and_health_logger/server/habits/id";
+const ALL_HABITS_URL = "http://localhost:8080/habit_and_health_logger/server/habits";
 let selectedHabits = {};
 let currentHabit = "";
-
+document.addEventListener("DOMContentLoaded", loadAllHabits);
 function addMessage(text, type) {
     const div = document.createElement("div");
     div.classList.add("message", type);
@@ -22,6 +33,8 @@ function addMessage(text, type) {
     chatBox.appendChild(div);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
+
+
 
 async function sendMessage(habit_messages) {
   let message="";
@@ -113,7 +126,9 @@ function refreshSelectedList() {
         div.classList.add("selected-item");
         div.innerHTML = `
             <span>${habit}: ${selectedHabits[habit]}</span>
+            <button class="edit-btn" data-habit="${habit}">edit</button>
             <button class="remove-btn" data-habit="${habit}">X</button>
+            
         `;
         selectedList.appendChild(div);
     }
@@ -146,3 +161,96 @@ sendAllBtn.addEventListener("click", () => {
     refreshSelectedList();
 });
 
+addHabit.addEventListener("click", () => {
+    document.getElementById("addHabitPopup").classList.remove("hidden");
+});
+saveNewHabit.addEventListener("click", createHabit);
+
+closeNewPopup.addEventListener("click", ()=>{
+   addHabitPopup.classList.add("hidden");
+});
+
+async function createHabit() {
+    console.log("creating a new habit");
+
+    try {
+        if (newHabitName.value === "" || newHabitUnit.value === "" || newHabitValue.value === "") {
+            alert("You should insert all values");
+            return;
+        }
+
+        const habitName = newHabitName.value;
+        const unit = newHabitUnit.value;
+        const value = newHabitValue.value;
+        const isActive = newHabitActive.checked;
+        const user_id = 1;
+
+        const response = await axios.post(ADD_HABIT_URL, {
+            user_id: user_id,
+            habit_name: habitName,
+            unit: unit,
+            value: value,
+            is_active: isActive ? 1 : 0
+        });
+
+        console.log("Habit saved:", response);
+
+        const habit = await getHabit();
+        console.log("Fetched:", habit);
+
+        const habitsPanel = document.querySelector(".habits-panel");
+
+        const newBtn = document.createElement("button");
+        newBtn.classList.add("habit-btn");
+        newBtn.dataset.habit = habit.habit_name;
+        newBtn.textContent = habit.habit_name;
+
+        habitsPanel.insertBefore(newBtn, addHabit);
+
+        addHabitPopup.classList.add("hidden");
+
+    } catch (error) {
+        console.log("error", error);
+    }
+}
+async function getHabit()
+{
+    try{
+        console.log("hi from get habit");
+        const url = GET_URL+"?id=1";
+        const response = await axios.get(url);
+        console.log(response);
+        return response.data.data;
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+}
+
+async function loadAllHabits() {
+    try {
+        const response = await axios.get(ALL_HABITS_URL);
+
+        const habits = response.data.data; 
+
+        const habitsPanel = document.querySelector(".habits-panel");
+
+        const existingBtns = document.querySelectorAll(".habit-btn");
+        existingBtns.forEach(btn => {
+            if (btn.id !== "addHabit") btn.remove();
+        });
+
+        habits.forEach(habit => {
+            const btn = document.createElement("button");
+            btn.classList.add("habit-btn");
+            btn.dataset.habit = habit.habit_name;
+            btn.textContent = habit.habit_name;
+
+            habitsPanel.insertBefore(btn, addHabit);
+        });
+
+    } catch (error) {
+        console.log("Error loading habits:", error);
+    }
+}

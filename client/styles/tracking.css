@@ -17,8 +17,9 @@ body {
 .habits-panel {
     width: 320px; 
     background: #daddfd;
-    border-right: 1px solid #ffffff;
     padding: 20px;
+    padding-top:6%;
+    box-shadow: 30px 10px 50px rgb(0, 0, 0);
 }
 
 .habits-panel h3 {
@@ -35,11 +36,37 @@ body {
 }
 
 .habit-btn {
-    flex: 1 1 calc(50% - 10px); 
     padding: 12px;
     margin-bottom: 10px;
     border: none;
     background: #3802b8;
+    color: white;
+    cursor: pointer;
+    border-radius: 15px;
+    font-size: 16px;
+    text-align: center;
+    margin:3px;
+    margin-bottom: 10px;
+
+
+}
+
+.habit-btn-add {
+    padding: 12px;
+    margin:3px;
+    border: none;
+    background: #6190d6;
+    color: white;
+    cursor: pointer;
+    border-radius: 15px;
+    font-size: 16px;
+    text-align: center;
+}
+.habit-btn-delete {
+    padding: 12px;
+    margin:5px;
+    border: none;
+    background: #6190d6;
     color: white;
     cursor: pointer;
     border-radius: 15px;
@@ -57,12 +84,22 @@ body {
     border-radius: 5px;
     margin-bottom: 8px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 
 .remove-btn {
     background: #dc3545;
+    color: white;
+    border: none;
+    padding: 3px 7px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.edit-btn {
+    background: #6190d6;
     color: white;
     border: none;
     padding: 3px 7px;
@@ -198,6 +235,31 @@ body {
 }
 
 #closePopup:hover {
+    background: #b63232;
+}
+
+#saveNewHabit {
+    flex:1;
+    background: #041170;
+    color: white;
+    border:none;
+    padding:10px;
+    border-radius:10px;
+}
+
+#saveNewHabit:hover {
+    background: #030a66;
+}
+
+#closeNewPopup {
+    background: #dc3545;
+    color: white;
+    border:none;
+    padding:10px;
+    border-radius:10px;
+}
+
+#closeNewPopup:hover {
     background: #b63232;
 }
 

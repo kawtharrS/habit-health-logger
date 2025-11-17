@@ -13,30 +13,25 @@
     <div class="habits-panel">
         <h3>Habits</h3>
 
-        <button class="habit-btn" data-habit="Sleep">Sleep</button>
-        <button class="habit-btn" data-habit="Steps">Steps</button>
-        <button class="habit-btn" data-habit="Caffeine">Caffeine</button>
-        <button class="habit-btn" data-habit="Water">Water</button>
-        <button class="habit-btn" data-habit="Running">Running</button>
-        <button class="habit-btn" data-habit="Reading">Reading</button>
-        <button class="habit-btn" data-habit="Calories">Calories</button>
+
+        <button class="habit-btn-add" id="addHabit">+</button>
+        <button class="habit-btn-delete" id="deleteHabit">-</button>
+
 
         <h4>Selected</h4>
         <div id="selectedList" class="selected-list"></div>
 
         <button id="sendAllHabits" class="send-all-btn">Send All Habits</button>
+        <button id="historyAllHabits" class="send-all-btn">History</button>
     </div>
 
-
     <div class="chat-container">
-
         <div class="chat-box" id="chatBox"></div>
 
         <div class="input-area">
             <input type="text" id="userInput" placeholder="Type a message...">
             <button id="sendBtn">Send</button>
         </div>
-
     </div>
 
 </div>
@@ -47,6 +42,22 @@
         <input type="number" id="habitValue" placeholder="Enter value" min="0">
         <button id="saveHabit">Save</button>
         <button id="closePopup">Cancel</button>
+    </div>
+</div>
+
+<div id="addHabitPopup" class="popup hidden">
+    <div class="popup-content">
+        <p>Add New Habit</p>
+        <input type="text" id="newHabitName" placeholder="Habit Name">
+        <input type="text" id="newHabitUnit" placeholder="Unit (e.g., hrs, steps)">
+        <input type="text" id="newHabitValue" placeholder="Value (e.g., 1,2,3 .. )">
+
+        <label>
+            <input type="checkbox" id="newHabitActive" checked>
+            Active
+        </label>
+        <button id="saveNewHabit">Save</button>
+        <button id="closeNewPopup">Cancel</button>
     </div>
 </div>
 

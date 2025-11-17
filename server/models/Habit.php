@@ -6,7 +6,7 @@ class Habit extends Model {
     private int $user_id;
     private string $habit_name;
     private string $unit;
-    private ?float $target_value;
+    private ?int $value;
     private int $is_active;
     private string $created_at;
 
@@ -18,7 +18,7 @@ class Habit extends Model {
         $this->user_id = $data["user_id"];
         $this->habit_name = $data["habit_name"];
         $this->unit = $data["unit"];
-        $this->target_value=$data["target_value"];
+        $this->value=$data["value"];
         $this->is_active=$data["is_active"];
         $this->created_at = $data["created_at"] ?? date('Y-m-d H:i:s');
 
@@ -54,11 +54,11 @@ class Habit extends Model {
         return $this->unit;
     }
 
-    public function setTargetValue(float $target_value){
-        $this->target_value = $target_value;
+    public function setTargetValue(float $value){
+        $this->value = $value;
     }
-    public function getTargetValue(){
-        return $this->target_value;
+    public function geValue(){
+        return $this->value;
     }
 
     public function setIsActive(int $is_active){
@@ -83,7 +83,7 @@ class Habit extends Model {
             . $this->user_id . " | " 
             . $this->habit_name . " | " 
             . $this->unit . " | " 
-            . ($this->target_value ?? 'NULL') . " | " 
+            . ($this->value ?? 'NULL') . " | " 
             . $this->is_active . " | " 
             . $this->created_at;
     }
@@ -94,7 +94,7 @@ class Habit extends Model {
             "user_id" => $this->user_id,
             "habit_name" => $this->habit_name,
             "unit" => $this->unit,
-            "target_value" => $this->target_value,
+            "value" => $this->value,
             "is_active" => $this->is_active,
             "created_at" => $this->created_at
         ];

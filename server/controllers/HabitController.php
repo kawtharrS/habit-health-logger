@@ -47,7 +47,7 @@ class HabitController{
             'user_id' => $input["user_id"],
             'habit_name' => $input["habit_name"],
             'unit' => $input["unit"],
-            'target_value' => $input["target_value"] ?? null,
+            'value' => $input["value"] ?? null,
             'is_active' => $input["is_active"]
         ];
 
@@ -93,8 +93,8 @@ class HabitController{
         if (!empty($input["unit"])) {
             $data["unit"] = $input["unit"];
         }
-        if (!empty($input["target_value"])) {
-            $data["target_value"] = $input["target_value"];
+        if (!empty($input["value"])) {
+            $data["value"] = $input["value"];
         }
         if (!empty($input["is_active"])) {
             $data["is_active"] = $input["is_active"];
