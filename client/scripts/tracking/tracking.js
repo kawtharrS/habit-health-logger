@@ -6,55 +6,49 @@ const popupLabel = document.getElementById("popupLabel");
 const habitValue = document.getElementById("habitValue");
 const saveHabit = document.getElementById("saveHabit");
 const closePopup = document.getElementById("closePopup");
-const habitButtons = document.querySelectorAll(".habit-btn");
 const sendAllBtn = document.getElementById("sendAllHabits");
 const selectedList = document.getElementById("selectedList");
-const addHabit = document.getElementById("addHabit") ;
-const deleteHabit = document.getElementById("deleteHabit");
+const addHabit = document.getElementById("addHabit");
 const addHabitPopup = document.getElementById("addHabitPopup");
 const saveNewHabit = document.getElementById("saveNewHabit");
-const closeNewPopup= document.getElementById("closeNewPopup");
-const newHabitName= document.getElementById("newHabitName");
-const newHabitUnit= document.getElementById("newHabitUnit");
-const newHabitValue= document.getElementById("newHabitValue");
-const newHabitActive= document.getElementById("newHabitActive");
+const closeNewPopup = document.getElementById("closeNewPopup");
+const newHabitName = document.getElementById("newHabitName");
+const newHabitUnit = document.getElementById("newHabitUnit");
+const newHabitValue = document.getElementById("newHabitValue");
+const newHabitActive = document.getElementById("newHabitActive");
+const deletePopup = document.getElementById("deletePopup");
+
+
 
 const URL_API = "http://localhost:8080/habit_and_health_logger/server/public/review.php";
 const ADD_HABIT_URL = "http://localhost:8080/habit_and_health_logger/server/habits/create";
-const GET_URL = "http://localhost:8080/habit_and_health_logger/server/habits/id";
 const ALL_HABITS_URL = "http://localhost:8080/habit_and_health_logger/server/habits";
+const DELETE_HABITS_URL = "http://localhost:8080/habit_and_health_logger/server/habits/delete";
+
 let selectedHabits = {};
 let currentHabit = "";
-document.addEventListener("DOMContentLoaded", loadAllHabits);
+
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadAllHabits();
+    await loadUserHabits();
+});
+
 function addMessage(text, type) {
     const div = document.createElement("div");
-    div.classList.add("message", type);
+    div.classList.add("message", type === "ai" ? "bot" : "user");
     div.textContent = text;
     chatBox.appendChild(div);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-
-
-async function sendMessage(habit_messages) {
-  let message="";
-  if(habit_messages != "")
-  {
-     message = habit_messages;
-  }
-  else{
-      message = input.value.trim();
-      addMessage(message, "user");
-      input.value = "";
-  }
-    if (message === "") return;
+async function sendMessage(habit_messages = "") {
+    let message = habit_messages || input.value.trim();
+    if (!habit_messages) addMessage(message, "user");
+    input.value = "";
+    if (!message) return;
 
     try {
-        const response = await axios.post(
-            URL_API,
-            { message: message },
-            { headers: { "Content-Type": "application/json" } }
-        );
+        const response = await axios.post(URL_API, { message }, { headers: { "Content-Type": "application/json" } });
         createAIMessage(response.data.reply);
     } catch (err) {
         createAIMessage("Sorry, I could not process your request.");
@@ -65,59 +59,42 @@ function createAIMessage(text) {
     addMessage(text, "ai");
 }
 
-sendBtn.addEventListener("click", sendMessage);
-input.addEventListener("keypress", function(e) {
-    if (e.key === "Enter") sendMessage();
-});
+sendBtn.addEventListener("click", () => sendMessage());
+input.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
 
-habitButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        currentHabit = btn.dataset.habit;
-
-        let unit = "";
-        switch (currentHabit) {
-            case "Sleep": unit = "/hrs"; break;
-            case "Steps": unit = "/step"; break;
-            case "Caffeine": unit = "/cup"; break;
-            case "Water": unit = "/L"; break;
-            case "Running": unit = "/Km"; break;
-            case "Reading": unit = "/pages"; break;
-            default: unit = "/cal";
-        }
-
-        popupLabel.textContent = "Enter value for: " + currentHabit + unit;
-        habitValue.value = "";
-        popup.classList.remove("hidden");
+function attachHabitListeners() {
+    const habitButtons = document.querySelectorAll(".habit-btn");
+    habitButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            currentHabit = btn.dataset.habit;
+            const unit = btn.dataset.unit || "";
+            popupLabel.textContent = `Enter value for: ${currentHabit}${unit ? `/${unit}` : ""}`;
+            habitValue.value = "";
+            popup.classList.remove("hidden");
+        });
     });
-});
+}
 
-saveHabit.addEventListener("click", () => {
+saveHabit.addEventListener("click", async () => {
     let value = parseFloat(habitValue.value.trim());
-
     if (isNaN(value) || value < 0) {
         alert("Value cannot be less than 0");
         return;
     }
 
-    let unit = "";
-    switch (currentHabit) {
-        case "Sleep": unit = "hrs"; break;
-        case "Steps": unit = "step"; break;
-        case "Caffeine": unit = "cup"; break;
-        case "Water": unit = "L"; break;
-        case "Running": unit = "Km"; break;
-        case "Reading": unit = "pages"; break;
-        default: unit = "cal";
+    try {
+        await axios.post(URL_API, { habit_name: currentHabit, value });
+        const btn = document.querySelector(`.habit-btn[data-habit="${currentHabit}"]`);
+        const unit = btn?.dataset.unit || "";
+        selectedHabits[currentHabit] = value + unit;
+        popup.classList.add("hidden");
+        refreshSelectedList();
+    } catch (error) {
+        console.log("Error saving habit:", error);
     }
-
-    selectedHabits[currentHabit] = value + unit;
-    popup.classList.add("hidden");
-    refreshSelectedList();
 });
 
-closePopup.addEventListener("click", () => {
-    popup.classList.add("hidden");
-});
+closePopup.addEventListener("click", () => popup.classList.add("hidden"));
 
 function refreshSelectedList() {
     selectedList.innerHTML = "";
@@ -128,17 +105,25 @@ function refreshSelectedList() {
             <span>${habit}: ${selectedHabits[habit]}</span>
             <button class="edit-btn" data-habit="${habit}">edit</button>
             <button class="remove-btn" data-habit="${habit}">X</button>
-            
         `;
         selectedList.appendChild(div);
     }
 
-    const removeButtons = document.querySelectorAll(".remove-btn");
-    removeButtons.forEach(btn => {
+    document.querySelectorAll(".remove-btn").forEach(btn => {
         btn.addEventListener("click", () => {
             const habitName = btn.dataset.habit;
             delete selectedHabits[habitName];
             refreshSelectedList();
+        });
+    });
+
+    document.querySelectorAll(".edit-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            currentHabit = btn.dataset.habit;
+            const unit = document.querySelector(`.habit-btn[data-habit="${currentHabit}"]`)?.dataset.unit || "";
+            popupLabel.textContent = `Enter value for: ${currentHabit}${unit ? `/${unit}` : ""}`;
+            habitValue.value = parseFloat(selectedHabits[currentHabit]) || "";
+            popup.classList.remove("hidden");
         });
     });
 }
@@ -150,107 +135,80 @@ sendAllBtn.addEventListener("click", () => {
     }
 
     let finalMessage = "Today's Habits:\n";
-    for (let habit in selectedHabits) {
-        finalMessage += `${habit}: ${selectedHabits[habit]}\n`;
-    }
+    for (let habit in selectedHabits) finalMessage += `${habit}: ${selectedHabits[habit]}\n`;
 
     addMessage(finalMessage.trim(), "user");
-    sendMessage(finalMessage.trim()); 
+    sendMessage(finalMessage.trim());
 
     selectedHabits = {};
     refreshSelectedList();
 });
 
-addHabit.addEventListener("click", () => {
-    document.getElementById("addHabitPopup").classList.remove("hidden");
-});
+addHabit.addEventListener("click", () => addHabitPopup.classList.remove("hidden"));
+closeNewPopup.addEventListener("click", () => addHabitPopup.classList.add("hidden"));
 saveNewHabit.addEventListener("click", createHabit);
 
-closeNewPopup.addEventListener("click", ()=>{
-   addHabitPopup.classList.add("hidden");
-});
-
 async function createHabit() {
-    console.log("creating a new habit");
+    if (!newHabitName.value || !newHabitUnit.value || !newHabitValue.value) {
+        alert("You should insert all values");
+        return;
+    }
 
     try {
-        if (newHabitName.value === "" || newHabitUnit.value === "" || newHabitValue.value === "") {
-            alert("You should insert all values");
-            return;
-        }
-
-        const habitName = newHabitName.value;
-        const unit = newHabitUnit.value;
-        const value = newHabitValue.value;
-        const isActive = newHabitActive.checked;
-        const user_id = 1;
-
         const response = await axios.post(ADD_HABIT_URL, {
-            user_id: user_id,
-            habit_name: habitName,
-            unit: unit,
-            value: value,
-            is_active: isActive ? 1 : 0
+            user_id: 1,
+            habit_name: newHabitName.value,
+            unit: newHabitUnit.value,
+            value: newHabitValue.value,
+            is_active: newHabitActive.checked ? 1 : 0
         });
-
-        console.log("Habit saved:", response);
-
-        const habit = await getHabit();
-        console.log("Fetched:", habit);
-
-        const habitsPanel = document.querySelector(".habits-panel");
-
-        const newBtn = document.createElement("button");
-        newBtn.classList.add("habit-btn");
-        newBtn.dataset.habit = habit.habit_name;
-        newBtn.textContent = habit.habit_name;
-
-        habitsPanel.insertBefore(newBtn, addHabit);
+        console.log("Habit created:", response);
 
         addHabitPopup.classList.add("hidden");
+        newHabitName.value = "";
+        newHabitUnit.value = "";
+        newHabitValue.value = "";
+        newHabitActive.checked = false;
 
+        await loadAllHabits();
     } catch (error) {
-        console.log("error", error);
-    }
-}
-async function getHabit()
-{
-    try{
-        console.log("hi from get habit");
-        const url = GET_URL+"?id=1";
-        const response = await axios.get(url);
-        console.log(response);
-        return response.data.data;
-    }
-    catch(error)
-    {
-        console.log(error);
+        console.log("Error creating habit:", error);
     }
 }
 
 async function loadAllHabits() {
     try {
         const response = await axios.get(ALL_HABITS_URL);
-
-        const habits = response.data.data; 
-
+        const habits = response.data.data;
         const habitsPanel = document.querySelector(".habits-panel");
 
-        const existingBtns = document.querySelectorAll(".habit-btn");
-        existingBtns.forEach(btn => {
-            if (btn.id !== "addHabit") btn.remove();
-        });
+        document.querySelectorAll(".habit-btn").forEach(btn => { if (btn.id !== "addHabit") btn.remove(); });
 
         habits.forEach(habit => {
             const btn = document.createElement("button");
             btn.classList.add("habit-btn");
             btn.dataset.habit = habit.habit_name;
+            btn.dataset.unit = habit.unit;
             btn.textContent = habit.habit_name;
-
             habitsPanel.insertBefore(btn, addHabit);
         });
 
+        attachHabitListeners();
     } catch (error) {
         console.log("Error loading habits:", error);
+    }
+}
+
+
+deletePopup.addEventListener("click",deleteHabits);
+async function deleteHabits()
+{
+    console.log("hi");
+    try{
+
+    }
+    catch(error)
+    {
+        console.log(error);
     }
 }

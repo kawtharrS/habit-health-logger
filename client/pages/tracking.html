@@ -15,8 +15,6 @@
 
 
         <button class="habit-btn-add" id="addHabit">+</button>
-        <button class="habit-btn-delete" id="deleteHabit">-</button>
-
 
         <h4>Selected</h4>
         <div id="selectedList" class="selected-list"></div>
@@ -40,8 +38,12 @@
     <div class="popup-content">
         <p id="popupLabel"></p>
         <input type="number" id="habitValue" placeholder="Enter value" min="0">
-        <button id="saveHabit">Save</button>
-        <button id="closePopup">Cancel</button>
+        <div class="popup-buttons">
+            <button id="deletePopup">DELETE</button>
+            <button id="saveHabit">Save</button>
+        </div>
+            <button id="closePopup">Cancel</button>
+
     </div>
 </div>
 
@@ -58,6 +60,12 @@
         </label>
         <button id="saveNewHabit">Save</button>
         <button id="closeNewPopup">Cancel</button>
+    </div>
+</div>
+
+<div id="deleteHabitPopup" class="popup hidden">
+    <div class="popup-content-to-delete">
+        <h1>hit</h1>
     </div>
 </div>
 

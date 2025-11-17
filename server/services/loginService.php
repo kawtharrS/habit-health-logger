@@ -1,10 +1,23 @@
 <?php
-include(__DIR__ . '/../connection/connection.php');
-include(__DIR__ . '/../models/User.php');
-include("ResponseService.php");
+require_once(__DIR__ . '/../connection/connection.php');
+require_once(__DIR__ . '/../models/User.php');
+require_once("ResponseService.php");
 
-function login($email, $password){
-    global $connection;
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+$input = json_decode(file_get_contents('php://input'), true);
+$email = $input['email'] ?? '';
+$password = $input['password'] ?? '';
+
+function login() {
+    global $connection, $email, $password;
+
+    if (!$email || !$password) {
+        ResponseService::result(400, "Email and password are required");
+    }
 
     $sql = "SELECT * FROM users WHERE email = ?";
     $query = $connection->prepare($sql);
@@ -12,13 +25,12 @@ function login($email, $password){
     $query->execute();
     $data = $query->get_result()->fetch_assoc();
 
-    if(!empty($data) && password_verify($password, $data['password'])){
-        echo ResponseService::response(200, "You are logged in");
-        return;
+    if (!empty($data) && password_verify($password, $data['password'])) {
+        ResponseService::result(200, "You are logged in", ["id" => $data['id']]);
+    } else {
+        ResponseService::result(401, "Invalid email or password");
     }
-
-    echo ResponseService::response(401, "Invalid email or password");
 }
 
-login("layla@gmail.com","789");
+login();
 ?>

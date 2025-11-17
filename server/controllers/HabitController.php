@@ -67,7 +67,7 @@ class HabitController{
 
         $id = $data["id"];
 
-        $success = Habit::delete($connection, $id);
+        $success = self::delete($connection, $id);
         if ($success) {
             echo ResponseService::response(200, "deleted");
         } else {
@@ -104,8 +104,9 @@ class HabitController{
             return ResponseService::response(400, "No fields to update");
         }
 
-        $updatedHabit = Habit::update($connection,$data, $id);
-        $updatedHabit = Habit::find($connection, $id);
+        $entry = Entry::find($connection, $id);
+        $entry->update($connection, $data);
+        $updatedHabit = Entry::find($connection, $id);
 
 
         return ResponseService::response(200, $updatedHabit->toArray());

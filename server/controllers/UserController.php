@@ -68,7 +68,7 @@ class UserController{
 
         $id = $data["id"];
 
-        $success = User::delete($connection, $id);
+        $success = self::delete($connection, $id);
         if ($success) {
             echo ResponseService::response(200, "deleted");
         } else {
@@ -104,8 +104,9 @@ class UserController{
             return ResponseService::response(400, "No fields to update");
         }
 
-        $updatedUser = User::update($connection,$data, $id);
-        $updatedUser = User::find($connection, $id);
+        $entry = Entry::find($connection, $id);
+        $entry->update($connection, $data);
+        $updatedUser = Entry::find($connection, $id);
 
 
         return ResponseService::response(200, $updatedUser->toArray());

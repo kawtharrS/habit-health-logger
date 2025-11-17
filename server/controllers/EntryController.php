@@ -65,7 +65,7 @@ class EntryController{
             return;
         }
         $id=$data["id"];
-        $entry= Entry::delete($connection, $id);
+        $entry= self::delete($connection, $id);
         if($entry){
             echo ResponseService::response(200, "deleted");
         }
@@ -99,8 +99,8 @@ class EntryController{
         if (empty($data)) {
             return ResponseService::response(400, "No fields");
         }
-
-        $updatedEntry = Entry::update($connection, $data, $id);
+        $entry = Entry::find($connection, $id);
+        $entry->update($connection, $data);
         $updatedEntry = Entry::find($connection, $id);
 
         return ResponseService::response(200, $updatedEntry->toArray());

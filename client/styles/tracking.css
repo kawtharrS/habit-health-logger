@@ -205,11 +205,12 @@ body {
 
 .popup-buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-top: 10px;
+    gap:10px;
 }
 
-#saveHabit, #closePopup{
+#saveHabit, #closePopup, #deletePopup{
     padding: 10px 15px;
     border-radius: 8px;
     border: none;
@@ -236,6 +237,16 @@ body {
 
 #closePopup:hover {
     background: #b63232;
+}
+
+#deletePopup {
+    background: #787878;
+    color: white;
+}
+
+#deletePopup:hover {
+    background: #5f5f5f;
+    color: white;
 }
 
 #saveNewHabit {

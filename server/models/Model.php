@@ -2,7 +2,7 @@
 abstract class Model{
 
     protected static string $table;
-    //protected static string $primary_key = "id";
+    protected string $id;
 
     public static function find(mysqli $connection, string $id, string $primary_key = "id"){
         $sql = sprintf("SELECT * from %s WHERE %s = ?",
@@ -67,11 +67,11 @@ abstract class Model{
     }
 
 
-    public static function delete(mysqli $connection, string $id,  string $primary_key = "id")
+    public function delete(mysqli $connection, string $primary_key = "id")
     {
         $sql = sprintf("DELETE FROM %s WHERE %s = ?", static::$table, $primary_key);
         $query = $connection->prepare($sql);
-        $query->bind_param('s', $id);
+        $query->bind_param('s', $this->id);
         $query->execute();
         if($query->affected_rows >0)
         {
@@ -80,7 +80,7 @@ abstract class Model{
         return false;
     }
 
-    public static function update(mysqli $connection, array $data, string $id){
+    public function update(mysqli $connection, array $data){
         $column = implode(', ', array_map(fn($key) => "$key = ?", array_keys($data)));
 
         $sql = sprintf("UPDATE %s SET $column WHERE id = ?", static::$table);
@@ -98,7 +98,7 @@ abstract class Model{
         }
 
         $types .= 's';
-        $params[] = $id;
+        $params[] = $this->id;
 
         $query = $connection->prepare($sql);
         $query->bind_param($types, ...$params);
