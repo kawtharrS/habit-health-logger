@@ -1,67 +1,142 @@
-
-function openNav() {
-  document.getElementById("mySidenav").style.width = "250px";
-}
-
-const messageInput = document.querySelector('.message-input');
-const sendButton = document.querySelector('.send-button');
-const safeZone = document.querySelector('.safe');
-
-function createMessage(text, type='user')
-{
-  const container = document.createElement('div');
-  container.classList.add('container');
-  container.classList.add(type === 'user' ? 'darker' : 'lighter');
-
-  const img = document.createElement('img');
-  img.src= '../brainstorming images/avatar.png';
-  img.style.width ='100%';
-  if(type === 'user')
-    img.classList.add('left');
-  else
-    img.classList.add('right');
-
-  const p = document.createElement('p');
-  p.textContent = text;
-
-  container.appendChild(img);
-  container.appendChild(p);
-  safeZone.appendChild(container);
-
-  safeZone.scrollTop = safeZone.scrollHeight;
-}
-
-
-function aiReply(){
-  const reply = "Hi Kawthar!";
-  createMessage(reply, 'ai')
-}
-
-
-sendButton.addEventListener('click', sendMessage);
-messageInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') sendMessage();
-});
+const chatBox = document.getElementById("chatBox");
+const input = document.getElementById("userInput");
+const sendBtn = document.getElementById("sendBtn");
+const popup = document.getElementById("habitPopup");
+const popupLabel = document.getElementById("popupLabel");
+const habitValue = document.getElementById("habitValue");
+const saveHabit = document.getElementById("saveHabit");
+const closePopup = document.getElementById("closePopup");
+const habitButtons = document.querySelectorAll(".habit-btn");
+const sendAllBtn = document.getElementById("sendAllHabits");
+const selectedList = document.getElementById("selectedList");
 
 const URL_API = "http://localhost:8080/habit_and_health_logger/server/public/review.php";
 
+let selectedHabits = {};
+let currentHabit = "";
 
-async function sendMessage() {
-    const message = messageInput.value.trim();
-    if (message === '') return;
-
-    createMessage(message, 'user');
-    messageInput.value = '';
-
-    const response = await axios.post(
-        URL_API,
-        { message: message },
-        { headers: { 'Content-Type': 'application/json' } }
-    );
-
-    createMessage(response.data.reply, 'ai');
+function addMessage(text, type) {
+    const div = document.createElement("div");
+    div.classList.add("message", type);
+    div.textContent = text;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+async function sendMessage() {
+    const message = input.value.trim();
+    if (message === "") return;
 
+    addMessage(message, "user");
+    input.value = "";
 
+    try {
+        const response = await axios.post(
+            URL_API,
+            { message: message },
+            { headers: { "Content-Type": "application/json" } }
+        );
+        createAIMessage(response.data.reply);
+    } catch (err) {
+        createAIMessage("Sorry, I could not process your request.");
+    }
+}
+
+function createAIMessage(text) {
+    addMessage(text, "ai");
+}
+
+sendBtn.addEventListener("click", sendMessage);
+input.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") sendMessage();
+});
+
+habitButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        currentHabit = btn.dataset.habit;
+
+        let unit = "";
+        switch (currentHabit) {
+            case "Sleep": unit = "/hrs"; break;
+            case "Steps": unit = "/step"; break;
+            case "Caffeine": unit = "/cup"; break;
+            case "Water": unit = "/L"; break;
+            case "Running": unit = "/Km"; break;
+            case "Reading": unit = "/pages"; break;
+            default: unit = "/cal";
+        }
+
+        popupLabel.textContent = "Enter value for: " + currentHabit + unit;
+        habitValue.value = "";
+        popup.classList.remove("hidden");
+    });
+});
+
+saveHabit.addEventListener("click", () => {
+    let value = parseFloat(habitValue.value.trim());
+
+    if (isNaN(value) || value < 0) {
+        alert("Value cannot be less than 0");
+        return;
+    }
+
+    let unit = "";
+    switch (currentHabit) {
+        case "Sleep": unit = "hrs"; break;
+        case "Steps": unit = "step"; break;
+        case "Caffeine": unit = "cup"; break;
+        case "Water": unit = "L"; break;
+        case "Running": unit = "Km"; break;
+        case "Reading": unit = "pages"; break;
+        default: unit = "cal";
+    }
+
+    selectedHabits[currentHabit] = value + unit;
+    popup.classList.add("hidden");
+    refreshSelectedList();
+});
+
+closePopup.addEventListener("click", () => {
+    popup.classList.add("hidden");
+});
+
+function refreshSelectedList() {
+    selectedList.innerHTML = "";
+    for (let habit in selectedHabits) {
+        const div = document.createElement("div");
+        div.classList.add("selected-item");
+        div.innerHTML = `
+            <span>${habit}: ${selectedHabits[habit]}</span>
+            <button class="remove-btn" data-habit="${habit}">X</button>
+        `;
+        selectedList.appendChild(div);
+    }
+
+    const removeButtons = document.querySelectorAll(".remove-btn");
+    removeButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const habitName = btn.dataset.habit;
+            delete selectedHabits[habitName];
+            refreshSelectedList();
+        });
+    });
+}
+
+sendAllBtn.addEventListener("click", () => {
+    if (Object.keys(selectedHabits).length === 0) {
+        alert("No habits selected!");
+        return;
+    }
+
+    let finalMessage = "Today's Habits:\n";
+    for (let habit in selectedHabits) {
+        finalMessage += `${habit}: ${selectedHabits[habit]}\n`;
+    }
+
+    addMessage(finalMessage.trim(), "user");
+    sendMessage(); 
+
+    selectedHabits = {};
+    refreshSelectedList();
+});
 

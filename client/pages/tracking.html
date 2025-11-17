@@ -3,64 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Chat With Habits</title>
     <link rel="stylesheet" href="../styles/tracking.css">
 </head>
 <body>
 
-    <div id="mySidenav" class="sidenav">
-        <a href="#">History</a>
+<div class="layout">
+
+    <div class="habits-panel">
+        <h3>Habits</h3>
+
+        <button class="habit-btn" data-habit="Sleep">Sleep</button>
+        <button class="habit-btn" data-habit="Steps">Steps</button>
+        <button class="habit-btn" data-habit="Caffeine">Caffeine</button>
+        <button class="habit-btn" data-habit="Water">Water</button>
+        <button class="habit-btn" data-habit="Running">Running</button>
+        <button class="habit-btn" data-habit="Reading">Reading</button>
+        <button class="habit-btn" data-habit="Calories">Calories</button>
+
+        <h4>Selected</h4>
+        <div id="selectedList" class="selected-list"></div>
+
+        <button id="sendAllHabits" class="send-all-btn">Send All Habits</button>
     </div>
 
-    <div class="main-content">
-        <header>
-            <h1 class="logo">BinGo AI Chat</h1>
-        </header>
 
-        <div class="safe-zone">
-            <div class="safe">
-                <div class="container darker" hidden>
-                </div>
+    <div class="chat-container">
 
-                <div class="container lighter" hidden>
-                </div>
+        <div class="chat-box" id="chatBox"></div>
 
-            </div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Type a message...">
+            <button id="sendBtn">Send</button>
         </div>
+
     </div>
 
-    <section id="rightSidenav" class="rightsidenav">
-        <h2 class="side-title">Quicks</h2>
+</div>
 
-        <div class="side-option">
-            <input type="checkbox" id="opt1">
-            <label for="opt1">Sleeping</label>
-        </div>
-
-        <div class="side-option">
-            <input type="checkbox" id="opt2">
-            <label for="opt2">Drinking Water</label>
-        </div>
-
-        <div class="side-option">
-            <input type="checkbox" id="opt3">
-            <label for="opt3">Walking</label>
-        </div>
-
-        <div class="side-option">
-            <input type="checkbox" id="opt4">
-            <label for="opt4">Reading</label>
-        </div>
-    </section>
-
-
-    <div class="message-input-container">
-        <input type="text" class="message-input" placeholder="Type a message...">
-        <button class="send-button">
-            <i class='fas fa-paper-plane'></i>
-        </button>
+<div id="habitPopup" class="popup hidden">
+    <div class="popup-content">
+        <p id="popupLabel"></p>
+        <input type="number" id="habitValue" placeholder="Enter value" min="0">
+        <button id="saveHabit">Save</button>
+        <button id="closePopup">Cancel</button>
     </div>
-    <script src="../scripts/tracking/axios.min.js"></script>
-    <script src="../scripts/tracking/tracking.js"></script>
+</div>
+
+<script src="../scripts/tracking/axios.min.js"></script>
+<script src="../scripts/tracking/tracking.js"></script>
 </body>
 </html>
