@@ -23,12 +23,18 @@ function addMessage(text, type) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-async function sendMessage() {
-    const message = input.value.trim();
+async function sendMessage(habit_messages) {
+  let message="";
+  if(habit_messages != "")
+  {
+     message = habit_messages;
+  }
+  else{
+      message = input.value.trim();
+      addMessage(message, "user");
+      input.value = "";
+  }
     if (message === "") return;
-
-    addMessage(message, "user");
-    input.value = "";
 
     try {
         const response = await axios.post(
@@ -134,7 +140,7 @@ sendAllBtn.addEventListener("click", () => {
     }
 
     addMessage(finalMessage.trim(), "user");
-    sendMessage(); 
+    sendMessage(finalMessage.trim()); 
 
     selectedHabits = {};
     refreshSelectedList();
