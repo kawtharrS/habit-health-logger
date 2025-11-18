@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: #f4f4f4;
+    background: #daddfd;
     margin: 0;
     padding: 20px;
 }
@@ -13,7 +13,7 @@ body {
 h1 {
     text-align: left;
     margin-bottom: 20px;
-    color:#2c3e50;
+    color:#3802b8;
 }
 
 .table-wrapper {
@@ -30,7 +30,7 @@ table {
 }
 
 thead {
-    background: #2c3e50;
+    background: #3802b8;
     color: white;
 }
 

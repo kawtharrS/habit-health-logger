@@ -286,6 +286,11 @@ body {
     border:none;
     transition: 0.3s;
 }
+.send-all-btn  a{
+    text-decoration: none;
+    color:#ffffff;
+
+}
 
 .send-all-btn:hover {
     background: #030a66;
