@@ -1,7 +1,9 @@
 URLS={
     users :"http://localhost:8080/habit_and_health_logger/server/users",
-    login: "http://localhost:8080/habit_and_health_logger/server/services/loginService.php"
+    login: "http://localhost:8080/habit_and_health_logger/server/services/loginService.php", 
+    entries: "http://localhost:8080/habit_and_health_logger/server/entries"
 }
+const userId = localStorage.getItem("user-id");
 
 function validateName (name)
 {

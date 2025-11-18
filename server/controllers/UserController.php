@@ -22,7 +22,6 @@ class UserController{
 }
     function getAllUsers()
     {
-        
         global $connection;
         $users= User::findAll($connection);
         $usersArray=[];

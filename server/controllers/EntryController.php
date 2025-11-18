@@ -24,7 +24,15 @@ class EntryController{
     function getAllEntries()
     {
         global $connection;
-        $entries = Entry::findAll($connection);
+
+        if (!isset($_GET["user_id"])) {
+            echo ResponseService::response(400, "user_id missing");
+            return;
+        }
+
+        $userId = intval($_GET["user_id"]);
+
+        $entries = Entry::where($connection, ["user_id" => $userId]);
         $habitsArray=[];
 
         foreach($entries as $entry)
