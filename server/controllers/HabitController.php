@@ -76,7 +76,7 @@ class HabitController{
 
         $id = $data["id"];
 
-        $entry = Entry::find($connection, $id);
+        $entry = Habit::find($connection, $id);
         $success = $entry->delete($connection);
         if ($success) {
             echo ResponseService::response(200, "deleted");

@@ -14,10 +14,8 @@ const saveNewHabit = document.getElementById("saveNewHabit");
 const closeNewPopup = document.getElementById("closeNewPopup");
 const newHabitName = document.getElementById("newHabitName");
 const newHabitUnit = document.getElementById("newHabitUnit");
-const newHabitValue = document.getElementById("newHabitValue");
 const newHabitActive = document.getElementById("newHabitActive");
 const deletePopup = document.getElementById("deletePopup");
-
 
 
 const URL_API = "http://localhost:8080/habit_and_health_logger/server/public/review.php";
@@ -148,18 +146,19 @@ closeNewPopup.addEventListener("click", () => addHabitPopup.classList.add("hidde
 saveNewHabit.addEventListener("click", createHabit);
 
 async function createHabit() {
-    if (!newHabitName.value || !newHabitUnit.value || !newHabitValue.value) {
+    if (!newHabitName.value || !newHabitUnit.value) {
         alert("You should insert all values");
         return;
     }
 
     try {
+        const value=null;
         const userId = localStorage.getItem("user-id");
         const response = await axios.post(ADD_HABIT_URL, {
             user_id: userId,
             habit_name: newHabitName.value,
             unit: newHabitUnit.value,
-            value: newHabitValue.value,
+            value:value,
             is_active: newHabitActive.checked ? 1 : 0
         });
         console.log("Habit created:", response);
@@ -167,7 +166,6 @@ async function createHabit() {
         addHabitPopup.classList.add("hidden");
         newHabitName.value = "";
         newHabitUnit.value = "";
-        newHabitValue.value = "";
         newHabitActive.checked = false;
 
         await loadUserHabits();
@@ -192,6 +190,7 @@ async function loadUserHabits() {
             btn.classList.add("habit-btn");
             btn.dataset.habit = habit.habit_name;
             btn.dataset.unit = habit.unit;
+            btn.dataset.id = habit.id;
             btn.textContent = habit.habit_name;
             habitsPanel.insertBefore(btn, addHabit);
         });
@@ -204,17 +203,39 @@ async function loadUserHabits() {
 
 
 
-deletePopup.addEventListener("click",deleteHabits);
-async function deleteHabits()
-{
-    console.log("hi");
-    const habitId = this.dataset.id;
-    console.log(habitId);
-    try{
+deletePopup.addEventListener("click", deleteHabits);
 
+async function deleteHabits() {
+    if (!currentHabit) {
+        alert("Please select a habit to delete!");
+        return;
     }
-    catch(error)
-    {
-        console.log(error);
+
+    const habitBtn = document.querySelector(`.habit-btn[data-habit="${currentHabit}"]`);
+    const habitId = habitBtn?.dataset.id;
+
+    if (!habitId) {
+        alert("Habit ID not found!");
+        return;
+    }
+
+    if (!confirm(`Are you sure you want to delete ${currentHabit}?`)) return;
+
+    try {
+        const response = await axios.post(DELETE_HABITS_URL, { id: habitId });
+        console.log("Deleted:", response.data);
+
+        if (selectedHabits[currentHabit]) delete selectedHabits[currentHabit];
+
+        currentHabit = "";
+
+        refreshSelectedList();
+        await loadUserHabits();
+
+        popup.classList.add("hidden");
+
+    } catch (error) {
+        console.log("Error deleting habit:", error);
+        alert("Failed to delete habit");
     }
 }
