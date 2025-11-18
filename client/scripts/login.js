@@ -17,14 +17,11 @@ loginBtn.addEventListener("click", async () => {
         const response = await axios.post(LOGIN_URL, { email, password }, {
             headers: { "Content-Type": "application/json" }
         });
+        console.log(response);
+        const userId = response.data.data.id;
+        localStorage.setItem('user-id',userId); 
+        console.log("User id saved:", userId);
 
-        const userData = response.data.data;
-        localStorage.setItem('user', JSON.stringify(userData)); 
-        console.log("User data saved:", userData);
-
-        const storedUser = JSON.parse(localStorage.getItem('user'));
-        console.log("Read from localStorage:", storedUser);
-        console.log("User ID:", storedUser.id);
 
     } catch (error) {
         console.error("Login failed:", error);

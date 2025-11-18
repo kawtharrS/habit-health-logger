@@ -2,7 +2,7 @@
 include("Model.php");
 
 class Entry extends Model {
-    private int $id;
+    protected int $id;
     private int $user_id;
     private ?int $habit_id;
     private ?float $value;

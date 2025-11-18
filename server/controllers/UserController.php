@@ -68,7 +68,8 @@ class UserController{
 
         $id = $data["id"];
 
-        $success = self::delete($connection, $id);
+        $entry = Entry::find($connection, $id);
+        $success = $entry->delete($connection);
         if ($success) {
             echo ResponseService::response(200, "deleted");
         } else {

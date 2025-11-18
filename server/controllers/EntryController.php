@@ -65,8 +65,9 @@ class EntryController{
             return;
         }
         $id=$data["id"];
-        $entry= self::delete($connection, $id);
-        if($entry){
+        $entry = Entry::find($connection, $id);
+        $success = $entry->delete($connection);
+        if($success){
             echo ResponseService::response(200, "deleted");
         }
         else{

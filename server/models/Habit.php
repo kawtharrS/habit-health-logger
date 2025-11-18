@@ -2,7 +2,7 @@
 include("Model.php");
 
 class Habit extends Model {
-    private int $id;
+    protected int $id;
     private int $user_id;
     private string $habit_name;
     private string $unit;

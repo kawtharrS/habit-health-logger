@@ -29,7 +29,6 @@ let selectedHabits = {};
 let currentHabit = "";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    await loadAllHabits();
     await loadUserHabits();
 });
 
@@ -155,8 +154,9 @@ async function createHabit() {
     }
 
     try {
+        const userId = localStorage.getItem("user-id");
         const response = await axios.post(ADD_HABIT_URL, {
-            user_id: 1,
+            user_id: userId,
             habit_name: newHabitName.value,
             unit: newHabitUnit.value,
             value: newHabitValue.value,
@@ -170,16 +170,19 @@ async function createHabit() {
         newHabitValue.value = "";
         newHabitActive.checked = false;
 
-        await loadAllHabits();
+        await loadUserHabits();
     } catch (error) {
         console.log("Error creating habit:", error);
     }
 }
 
-async function loadAllHabits() {
+async function loadUserHabits() {
     try {
-        const response = await axios.get(ALL_HABITS_URL);
+        const userId = localStorage.getItem("user-id");
+        console.log(userId);
+        const response = await axios.get(`${ALL_HABITS_URL}?user_id=${userId}`);
         const habits = response.data.data;
+        console.log(habits)
         const habitsPanel = document.querySelector(".habits-panel");
 
         document.querySelectorAll(".habit-btn").forEach(btn => { if (btn.id !== "addHabit") btn.remove(); });
@@ -200,10 +203,13 @@ async function loadAllHabits() {
 }
 
 
+
 deletePopup.addEventListener("click",deleteHabits);
 async function deleteHabits()
 {
     console.log("hi");
+    const habitId = this.dataset.id;
+    console.log(habitId);
     try{
 
     }

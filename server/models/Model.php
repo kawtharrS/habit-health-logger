@@ -2,7 +2,7 @@
 abstract class Model{
 
     protected static string $table;
-    protected string $id;
+    protected int $id;
 
     public static function find(mysqli $connection, string $id, string $primary_key = "id"){
         $sql = sprintf("SELECT * from %s WHERE %s = ?",
@@ -108,9 +108,38 @@ abstract class Model{
         return false;
     }
 
+    public static function where(mysqli $connection, array $conditions): array
+    {
+        $sql =sprintf("SELECT * FROM %s WHERE ", static::$table);
 
+        $clauses = [];
+        $values = [];
+        $types = "";
+
+        foreach ($conditions as $column => $value) {
+            $clauses[] = "$column = ?";
+            $values[] = $value;
+            $types .= is_int($value) ? "i" : "s";
+        }
+
+        $sql .= implode(" AND ", $clauses);
+
+        $query = $connection->prepare($sql);
+        $query->bind_param($types, ...$values);
+        $query->execute();
+        $result = $query->get_result();
+
+        $objects = [];
+        while ($row = $result->fetch_assoc()) {
+            $objects[] = new static($row);
+        }
+
+        return $objects;
+    }
 
 }
+
+
 
 
 
