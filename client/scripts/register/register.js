@@ -1,6 +1,5 @@
 registerBtn.addEventListener("click", register);
 
-
 async function register()
 {
     const username= name.value.trim();

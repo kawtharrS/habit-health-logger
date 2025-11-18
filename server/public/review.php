@@ -23,7 +23,7 @@ $data = [
     "input" => [
         [
             "role" => "system",
-            "content" => "Act as a professional habit and health coach."
+            "content" => "Act as a professional habit and health coach give summary feedback response, do not add ** and make it user friendly."
         ],
         [
             "role" => "user",
