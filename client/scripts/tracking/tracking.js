@@ -158,7 +158,7 @@ async function createHabit() {
             user_id: userId,
             habit_name: newHabitName.value,
             unit: newHabitUnit.value,
-            value:value,
+            target_value:value,
             is_active: newHabitActive.checked ? 1 : 0
         });
         console.log("Habit created:", response);

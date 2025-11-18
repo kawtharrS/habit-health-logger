@@ -15,23 +15,26 @@
         <section class="add-user">
             <h2>Add User</h2>
             <div class="input-group">
-                <label>Username:</label>
-                <input type="text" placeholder="Enter username">
+                <label for="username">Username:</label>
+                <input id="username" type="text" placeholder="Enter username">
             </div>
             <div class="input-group">
-                <label>Email:</label>
-                <input type="email" placeholder="Enter email">
+                <label for="email">Email:</label>
+                <input id="email" type="email" placeholder="Enter email">
             </div>
             <div class="input-group">
-                <label>Password:</label>
-                <input type="password" placeholder="Enter password">
+                <label for="password">Password:</label>
+                <input id="password" type="password" placeholder="Enter password">
             </div>
             <div class="input-group">
-                <label>Role:</label>
-                <input type="text" placeholder="Enter role">
+            <select name="role" id="role">
+                <option value="user">user</option>
+                <option value="admin">admin</option>
+                </select>
             </div>
-            <button class="add">Add User</button>
+            <button id="addUserBtn" class="add">Add User</button>
         </section>
+
         <section class="user-management">
             <h2>Users</h2>
             <table>
@@ -44,33 +47,13 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>John Doe</td>
-                        <td>john@example.com</td>
-                        <td>user</td>
-                        <td>
-                            <button class="edit">Edit</button>
-                            <button class="delete">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Jane Smith</td>
-                        <td>jane@example.com</td>
-                        <td>user</td>
-                        <td>
-                            <button class="edit">Edit</button>
-                            <button class="delete">Delete</button>
-                        </td>
-                    </tr>
+                <tbody id="usersTableBody">
+                    
                 </tbody>
             </table>
         </section>
-
-
     </main>
+
     <script src="../scripts/axios.min.js"></script>
     <script src="../scripts/admin.js"></script>
 </body>
