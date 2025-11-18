@@ -1,123 +1,128 @@
-<?php 
+<?php
 include(__DIR__ . '/../models/User.php');
 include(__DIR__ . '/../connection/connection.php');
 require_once(__DIR__ . '/../services/ResponseService.php');
 
+class UserController
+{
+    private mysqli $connection;
 
-class UserController{
-    function getUserById(){
-    global $connection;
-    
-    if(isset($_GET["id"])){
-        $id = $_GET["id"];
-    }
-    else{
-        echo ResponseService::response(500, 'ID is missing');
-        return;
-    }
-
-    $user = User::find($connection, $id);
-    echo ResponseService::response(200, $user->toArray());
-    return;
-}
-    function getAllUsers()
+    public function __construct()
     {
-        
         global $connection;
-        $users= User::findAll($connection);
-        $usersArray=[];
-        foreach($users as $user){
-            $usersArray[] = $user->toArray();
-        }
-        echo ResponseService::response(200, $usersArray);
-        return;
+        $this->connection = $connection;
     }
 
-    function insertUser(){
-        global $connection;
-
+    private function getInput(): array
+    {
         $input = $_POST;
         if (empty($input)) {
             $input = json_decode(file_get_contents("php://input"), true);
         }
+        return $input ?? [];
+    }
 
-        if(!isset($input["name"], $input["email"], $input["password"], $input["role"])){
-            return ResponseService::response(400, "Missing required Fields");
+    private function fetchUserById($id): ?User
+    {
+        $user = User::find($this->connection, $id);
+        if (!$user) {
+            echo ResponseService::response(404, "User not found");
+            return null;
+        }
+        return $user;
+    }
+
+    public function getUserById()
+    {
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            echo ResponseService::response(400, "ID is missing");
+            return;
         }
 
-        $input["password"] = password_hash($input["password"], PASSWORD_ARGON2I );
+        $user = $this->fetchUserById($id);
+        if ($user) {
+            echo ResponseService::response(200, $user->toArray());
+        }
+    }
+
+    public function getAllUsers()
+    {
+        $users = User::findAll($this->connection);
+        $usersArray = array_map(fn($user) => $user->toArray(), $users);
+        echo ResponseService::response(200, $usersArray);
+    }
+
+    public function insertUser()
+    {
+        $input = $this->getInput();
+
+        if (!isset($input["name"], $input["email"], $input["password"], $input["role"])) {
+            echo ResponseService::response(400, "Missing required fields");
+            return;
+        }
+
+        $input["password"] = password_hash($input["password"], PASSWORD_ARGON2I);
         $data = [
-            'name' => $input["name"], 
-            'email' => $input["email"], 
+            'name' => $input["name"],
+            'email' => $input["email"],
             'password' => $input["password"],
             'role' => $input["role"]
         ];
 
-        $user = User::create($connection, $data);
-        return ResponseService::response(200, $user->toArray());
+        $user = User::create($this->connection, $data);
+        echo ResponseService::response(200, $user->toArray());
     }
 
-    function deleteUser() {
-        global $connection;
+    public function deleteUser()
+    {
+        $input = $this->getInput();
+        $id = $input['id'] ?? null;
 
-        $data = json_decode(file_get_contents("php://input"), true);
-
-        if (empty($data["id"])) {
-            echo ResponseService::response(400, "Missing Id");
+        if (!$id) {
+            echo ResponseService::response(400, "Missing ID");
             return;
         }
 
-        $id = $data["id"];
-        $entry = User::find($connection, $id);
-        $success = $entry->delete($connection);
-
-        if ($success) {
-            echo ResponseService::response(200, "deleted");
-        } else {
-            echo ResponseService::response(500, "failed to delete");
+        $user = $this->fetchUserById($id);
+        if ($user) {
+            $success = $user->delete($this->connection);
+            echo ResponseService::response($success ? 200 : 500, $success ? "Deleted" : "Failed to delete");
         }
     }
 
+    public function updateUser()
+    {
+        $input = $this->getInput();
+        $id = $input['id'] ?? null;
 
-
-    function updateUser() {
-
-        global $connection;
-        $input = json_decode(file_get_contents("php://input"), true);
-
-
-        if (empty($input["id"])) {
-            return ResponseService::response(400, "ID is required");
+        if (!$id) {
+            echo ResponseService::response(400, "ID is required");
+            return;
         }
 
+        $user = $this->fetchUserById($id);
+        if (!$user) return;
+
+        $fields = ['name', 'email', 'password', 'role'];
         $data = [];
-        $id = $input["id"];
 
-        if (!empty($input["name"])) {
-            $data["name"] = $input["name"];
-        }
-        if (!empty($_POST["email"])) {
-            $data["email"] = $input["email"];
-        }
-        if (!empty($_POST["password"])) {
-            $data["password"] = $input["password"];
-        }
-        if (!empty($_POST["role"])) {
-            $data["role"] = $input["role"];
+        foreach ($fields as $field) {
+            if (!empty($input[$field])) {
+                $data[$field] = $field === 'password'
+                    ? password_hash($input[$field], PASSWORD_ARGON2I)
+                    : $input[$field];
+            }
         }
 
         if (empty($data)) {
-            return ResponseService::response(400, "No fields to update");
+            echo ResponseService::response(400, "No fields to update");
+            return;
         }
 
-        $entry = User::find($connection, $id);
-        $entry->update($connection, $data);
-        $updatedUser = User::find($connection, $id);
-
-
-        return ResponseService::response(200, $updatedUser->toArray());
+        $user->update($this->connection, $data);
+        $updatedUser = User::find($this->connection, $id);
+        echo ResponseService::response(200, $updatedUser->toArray());
     }
-
-
 }
 ?>

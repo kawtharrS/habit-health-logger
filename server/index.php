@@ -19,14 +19,12 @@ if (isset($apis[$request])) {
     
     $controller_path = "controllers/{$controller_name}.php";
     
-    // Debug: Check if file exists
     if (!file_exists($controller_path)) {
         die("Controller file not found: " . realpath($controller_path));
     }
     
     require_once $controller_path;
     
-    // Debug: Check if class exists
     if (!class_exists($controller_name)) {
         die("Class {$controller_name} not found after including {$controller_path}");
     }

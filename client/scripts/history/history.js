@@ -1,18 +1,20 @@
-const historyTableBody = document.getElementById("historyTableBody");
-
-ENTRIES_URL = "http://localhost:8080/habit_and_health_logger/server/entries";
-
-getHistory();
+window.onload=getHistory;
 
 async function getHistory()
 {
     try{
-        const response = await axios.get(ENTRIES_URL);
+        console.log(userId);
+
+        const response = await axios.get(`${URLS.entries}?user_id=${userId}`);
+
         console.log(response);
+
         const data = response.data.data;
         const success = response.data.status;
+
         console.log(data);
         console.log(success == 200)
+        
         if(success == 200)
         {
             historyTableBody.innerHTML =``;
@@ -27,13 +29,8 @@ async function getHistory()
                             <td>${entry.updated_at}</td>
                             <td>
                                 <button class="edit" data-action="edit">Edit</button>
-                                
+                                <button class="delete" data-action="edit">Delete</button>
                             </td>
-                            <td>
-                                <button class="edit" data-action="edit">Delete</button>
-                                
-                            </td>
-
                         </tr>`;
                     historyTableBody.innerHTML += row;
                 });

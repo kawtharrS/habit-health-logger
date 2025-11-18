@@ -11,13 +11,11 @@ body {
 }
 
 h1 {
-    text-align: left;
     margin-bottom: 20px;
-    color:#3802b8;
+    color: #3802b8;
 }
 
 .table-wrapper {
-    overflow-x: auto;
     background: white;
     padding: 10px;
     border-radius: 8px;
@@ -26,7 +24,6 @@ h1 {
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 800px;
 }
 
 thead {
@@ -37,43 +34,87 @@ thead {
 th, td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
-    vertical-align: top;
-    text-align:left;
+    text-align: left;
 }
 
-td:nth-child(2), td:nth-child(3) {
-    max-width: 350px;
-    word-wrap: break-word;
+button {
+    padding: 5px 10px;
+    width: 80px;          
+    text-align: center;
+    margin-right: 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: 0.3s;
+    margin-bottom: 5px;
 }
 
+
+button.edit {
+    background-color: #3498db;
+    color: #fff;
+}
+
+button.delete {
+    background-color: #e74c3c;
+    color: #fff;
+}
 @media (max-width: 700px) {
 
-    table, thead, tbody, th, td, tr {
-        display: block;
+    * {
+        box-sizing: border-box;  
     }
 
-    thead {
-        display: none;
+    body {
+        padding: 10px;
+        font-size: 14px;
+        overflow-x: hidden;     
+    }
+
+    .table-wrapper {
+        width: 100%;
+        overflow-x: hidden;
+    }
+    thead{
+        display:none;
+    }
+
+    table, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+        max-width: 100%;    
+        overflow-x: hidden;
+        word-wrap: break-word;   
     }
 
     tr {
-        margin-bottom: 15px;
-        background: #fff;
+        background: white;
+        margin-bottom: 12px;
         border-radius: 8px;
-        padding: 10px;
+        padding: 12px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        font-size: 13px;
     }
 
     td {
+        padding: 6px 0;
         border: none;
-        padding: 8px 0;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
     }
 
     td::before {
         content: attr(data-label);
         font-weight: bold;
-        display: block;
-        margin-bottom: 4px;
-        color: #555;
+        color: #3802b8;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+
+    button {
+        padding: 5px 8px;
+        width: 48%;
+        font-size: 12px;
     }
 }

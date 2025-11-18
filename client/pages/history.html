@@ -15,14 +15,14 @@
         <div class="table-wrapper">
             <table id="historyTable">
                 <thead>
-                    <tr>
-                        <th>Raw Text</th>
-                        <th>AI Response</th>
-                        <th>Created At</th>
-                        <th>Updated_at</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                    </tr>
+                <tr>
+                    <td data-label="Raw Text">Some user message</td>
+                    <td data-label="AI Response">AI reply here</td>
+                    <td data-label="Created At">2025-11-18</td>
+                    <td data-label="Updated At">2025-11-18</td>
+                    <td data-label="Actions">Actions</td>
+
+                </tr>
                 </thead>
 
                 <tbody id="historyTableBody">
@@ -32,6 +32,7 @@
 
     </div>
     <script src="../scripts/axios.min.js"></script>
-    <script src="../scripts/history.js"></script>
+    <script src="../scripts/global_scripts.js"></script>
+    <script src="../scripts/history/history.js"></script>
 </body>
 </html>

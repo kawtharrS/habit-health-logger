@@ -1,0 +1,24 @@
+URLS={
+    users :"http://localhost:8080/habit_and_health_logger/server/users",
+    login: "http://localhost:8080/habit_and_health_logger/server/services/loginService.php", 
+    entries: "http://localhost:8080/habit_and_health_logger/server/entries", 
+    api:"http://localhost:8080/habit_and_health_logger/server/public/review.php",
+    habits:"http://localhost:8080/habit_and_health_logger/server/habits"
+}
+const userId = localStorage.getItem("user-id");
+
+function validateName (name)
+{
+    const namePattern  = /^[a-zA-Z\s-]+$/; 
+
+    if(name === null || name.trim() === ""){
+        return "Name can not be empty!"
+    }
+
+    if(!namePattern.test(name))
+    {
+        return "Name can only contain letters, spaces & hyphens";
+    }
+
+    return true;
+}

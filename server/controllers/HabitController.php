@@ -1,55 +1,72 @@
-<?php 
+<?php
 include(__DIR__ . '/../models/Habit.php');
 include(__DIR__ . '/../connection/connection.php');
 require_once(__DIR__ . '/../services/ResponseService.php');
 
-class HabitController{
-    function getHabitById(){
-        global $connection;
-        
-        if(isset($_GET["id"])){
-            $id = $_GET["id"];
-        }
-        else{
-            echo ResponseService::response(500, 'ID is missing');
-            return;
-        }
+class HabitController
+{
+    private mysqli $connection;
 
-        $habit = Habit::find($connection, $id);
-        echo ResponseService::response(200, $habit->toArray());
-        return;
-    }
-    function getAllHabits()
+    public function __construct()
     {
         global $connection;
-
-        if (!isset($_GET["user_id"])) {
-            echo ResponseService::response(400, "user_id missing");
-            return;
-        }
-
-        $userId = intval($_GET["user_id"]);
-
-        $habits = Habit::where($connection, ["user_id" => $userId]);
-
-        $habitsArr = [];
-        foreach ($habits as $habit) {
-            $habitsArr[] = $habit->toArray();
-        }
-
-        echo ResponseService::response(200, $habitsArr);
+        $this->connection = $connection;
     }
 
-    function insertHabit(){
-        global $connection;
-
+    private function getInput(): array
+    {
         $input = $_POST;
         if (empty($input)) {
             $input = json_decode(file_get_contents("php://input"), true);
         }
+        return $input ?? [];
+    }
 
-        if(!isset($input["user_id"], $input["habit_name"], $input["unit"], $input["is_active"])){
-            return ResponseService::response(400, "Missing required Fields");
+    private function fetchHabitById($id): ?Habit
+    {
+        $habit = Habit::find($this->connection, $id);
+        if (!$habit) {
+            echo ResponseService::response(404, "Habit not found");
+            return null;
+        }
+        return $habit;
+    }
+
+    public function getHabitById()
+    {
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            echo ResponseService::response(400, "ID is missing");
+            return;
+        }
+
+        $habit = $this->fetchHabitById($id);
+        if ($habit) {
+            echo ResponseService::response(200, $habit->toArray());
+        }
+    }
+
+    public function getAllHabits()
+    {
+        $userId = $_GET['user_id'] ?? null;
+        if (!$userId) {
+            echo ResponseService::response(400, "user_id missing");
+            return;
+        }
+
+        $habits = Habit::where($this->connection, ["user_id" => intval($userId)]);
+        $habitsArr = array_map(fn($habit) => $habit->toArray(), $habits);
+
+        echo ResponseService::response(200, $habitsArr);
+    }
+
+    public function insertHabit()
+    {
+        $input = $this->getInput();
+
+        if (!isset($input["user_id"], $input["habit_name"], $input["unit"], $input["is_active"])) {
+            echo ResponseService::response(400, "Missing required fields");
+            return;
         }
 
         $data = [
@@ -60,68 +77,57 @@ class HabitController{
             'is_active' => $input["is_active"]
         ];
 
-        $habit = Habit::create($connection, $data);
-        return ResponseService::response(200, $habit->toArray());
+        $habit = Habit::create($this->connection, $data);
+        echo ResponseService::response(200, $habit->toArray());
     }
 
-    function deleteHabit() {
-        global $connection;
+    public function deleteHabit()
+    {
+        $input = $this->getInput();
+        $id = $input['id'] ?? null;
 
-        $data = json_decode(file_get_contents("php://input"), associative: true);
-
-        if (empty($data["id"])) {
-            echo ResponseService::response(400, "Missing Id");
+        if (!$id) {
+            echo ResponseService::response(400, "Missing ID");
             return;
         }
 
-        $id = $data["id"];
-
-        $entry = Habit::find($connection, $id);
-        $success = $entry->delete($connection);
-        if ($success) {
-            echo ResponseService::response(200, "deleted");
-        } else {
-            echo ResponseService::response(500, "failed to delete");
+        $habit = $this->fetchHabitById($id);
+        if ($habit) {
+            $success = $habit->delete($this->connection);
+            echo ResponseService::response($success ? 200 : 500, $success ? "Deleted" : "Failed to delete");
         }
     }
 
+    public function updateHabit()
+    {
+        $input = $this->getInput();
+        $id = $input['id'] ?? null;
 
-    function updateHabit() {
-        global $connection;
-
-        $input = $_POST;
-        if (empty($input)) {
-            $input = json_decode(file_get_contents("php://input"), true);
+        if (!$id) {
+            echo ResponseService::response(400, "ID is required");
+            return;
         }
 
+        $habit = $this->fetchHabitById($id);
+        if (!$habit) return;
+
+        $fields = ['habit_name', 'unit', 'target_value', 'is_active'];
         $data = [];
-        $id = $input["id"];
 
-        if (!empty($input["habit_name"])) {
-            $data["habit_name"] = $input["habit_name"];
-        }
-        if (!empty($input["unit"])) {
-            $data["unit"] = $input["unit"];
-        }
-        if (!empty($input["target_value"])) {
-            $data["target_value"] = $input["target_value"];
-        }
-        if (!empty($input["is_active"])) {
-            $data["is_active"] = $input["is_active"];
+        foreach ($fields as $field) {
+            if (isset($input[$field])) {
+                $data[$field] = $input[$field];
+            }
         }
 
         if (empty($data)) {
-            return ResponseService::response(400, "No fields to update");
+            echo ResponseService::response(400, "No fields to update");
+            return;
         }
 
-        $entry = Entry::find($connection, $id);
-        $entry->update($connection, $data);
-        $updatedHabit = Entry::find($connection, $id);
-
-
-        return ResponseService::response(200, $updatedHabit->toArray());
+        $habit->update($this->connection, $data);
+        $updatedHabit = Habit::find($this->connection, $id);
+        echo ResponseService::response(200, $updatedHabit->toArray());
     }
-
-
 }
 ?>

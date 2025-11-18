@@ -1,9 +1,3 @@
-const uname = document.getElementById("uname");
-const psw = document.getElementById("psw");
-const loginBtn = document.getElementById("loginBtn");
-
-const LOGIN_URL = "http://localhost:8080/habit_and_health_logger/server/services/loginService.php";
-
 loginBtn.addEventListener("click", async () => {
     const email = uname.value.trim();
     const password = psw.value;
@@ -14,14 +8,18 @@ loginBtn.addEventListener("click", async () => {
     }
 
     try {
-        const response = await axios.post(LOGIN_URL, { email, password }, {
+        const response = await axios.post(URLS.login, { email, password }, {
             headers: { "Content-Type": "application/json" }
         });
+
         console.log(response);
+
+        //add user id to the local storage
         const userId = response.data.data.id;
         localStorage.setItem('user-id',userId); 
         console.log("User id saved:", userId);
 
+        //add the user's role to the local storage 
         console.log (response.data.data[0].role);
         const userRole = response.data.data[0].role;
         localStorage.setItem('userRole', userRole);
