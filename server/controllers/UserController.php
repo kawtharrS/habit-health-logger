@@ -80,34 +80,36 @@ class UserController{
 
     function updateUser() {
         global $connection;
+        $input = json_decode(file_get_contents("php://input"), true);
 
-        if (empty($_POST["id"])) {
+
+        if (empty($input["id"])) {
             return ResponseService::response(400, "ID is required");
         }
 
         $data = [];
-        $id = $_POST["id"];
+        $id = $input["id"];
 
-        if (!empty($_POST["name"])) {
-            $data["name"] = $_POST["name"];
+        if (!empty($input["name"])) {
+            $data["name"] = $input["name"];
         }
         if (!empty($_POST["email"])) {
-            $data["email"] = $_POST["email"];
+            $data["email"] = $input["email"];
         }
         if (!empty($_POST["password"])) {
-            $data["password"] = $_POST["password"];
+            $data["password"] = $input["password"];
         }
         if (!empty($_POST["role"])) {
-            $data["role"] = $_POST["role"];
+            $data["role"] = $input["role"];
         }
 
         if (empty($data)) {
             return ResponseService::response(400, "No fields to update");
         }
 
-        $entry = Entry::find($connection, $id);
+        $entry = User::find($connection, $id);
         $entry->update($connection, $data);
-        $updatedUser = Entry::find($connection, $id);
+        $updatedUser = User::find($connection, $id);
 
 
         return ResponseService::response(200, $updatedUser->toArray());

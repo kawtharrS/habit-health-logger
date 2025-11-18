@@ -15,13 +15,20 @@ header {
 main {
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap; /* Allows sections to stack on smaller screens */
     padding: 20px;
+    gap: 20px;
+}
+
+.add-user,
+.user-management {
+    flex: 1 1 400px; /* Flexible width with a minimum */
+    max-width: 600px;
 }
 
 table {
     border-collapse: collapse;
     width: 100%;
-    max-width: 600px;
 }
 
 table th, table td {
@@ -41,6 +48,7 @@ button {
     border: none;
     cursor: pointer;
     border-radius: 3px;
+    transition: 0.3s;
 }
 
 button.edit {
@@ -62,10 +70,6 @@ button.add {
     border-radius: 4px;
 }
 
-.add-user {
-    max-width: 300px;
-}
-
 .input-group {
     display: flex;
     flex-direction: column;
@@ -76,8 +80,59 @@ button.add {
     margin-bottom: 5px;
 }
 
-.input-group input {
+.input-group input,
+.input-group select {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 3px;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+    main {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .add-user,
+    .user-management {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    table th, table td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    button {
+        margin-bottom: 5px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    header h1 {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    table th, table td {
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .input-group input,
+    .input-group select {
+        padding: 6px;
+        font-size: 14px;
+    }
+
+    button.add {
+        padding: 8px;
+        font-size: 14px;
+    }
 }

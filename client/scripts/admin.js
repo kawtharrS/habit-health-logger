@@ -8,7 +8,7 @@ const usersTableBody= document.getElementById("usersTableBody");
 const ADD_USER_URL = "http://localhost:8080/habit_and_health_logger/server/users/create";
 const USERS_URL="http://localhost:8080/habit_and_health_logger/server/users";
 const DELETE_USER_URL="http://localhost:8080/habit_and_health_logger/server/users/delete";
-const UPDATE_USER_URL="http://localhost:8080/habit_and_health_logger/server/users/delete";
+const UPDATE_USER_URL="http://localhost:8080/habit_and_health_logger/server/users/update";
 
 
 addUserBtn.addEventListener("click", addUser);
@@ -121,8 +121,10 @@ async function deleteUser(userId)
 
 async function updateUser(userId)
 {
+    let name = prompt("Enter you name");
+    if(name === null) return;
     try{
-        const response = await axios.post(UPDATE_USER_URL, {id:userId, name:"Kawthar"});
+        const response = await axios.post(UPDATE_USER_URL, {id:userId, name:name});
         console.log(response);
 
     }
