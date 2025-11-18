@@ -25,6 +25,9 @@ loginBtn.addEventListener("click", async () => {
         localStorage.setItem('userRole', userRole);
         console.log("User's role :", userRole);
 
+        alert("Welcome you are logged in");
+        window.location.replace("../../../index.html");
+
 
     } catch (error) {
         console.error("Login failed:", error);
