@@ -2,7 +2,7 @@
 include("Model.php");
 
 class User extends Model {
-    private int $id;
+    protected int $id;
     private string $name;
     private string $email;
     private string $password;

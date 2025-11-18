@@ -2,11 +2,11 @@
 include("Model.php");
 
 class Habit extends Model {
-    private int $id;
+    protected int $id;
     private int $user_id;
     private string $habit_name;
     private string $unit;
-    private ?float $target_value;
+    private ?int $target_value;
     private int $is_active;
     private string $created_at;
 
@@ -57,7 +57,7 @@ class Habit extends Model {
     public function setTargetValue(float $target_value){
         $this->target_value = $target_value;
     }
-    public function getTargetValue(){
+    public function geValue(){
         return $this->target_value;
     }
 

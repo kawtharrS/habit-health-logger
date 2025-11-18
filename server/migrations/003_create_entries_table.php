@@ -5,7 +5,6 @@ $sql = "CREATE TABLE IF NOT EXISTS entries (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     habit_id INT NULL,
-    value DECIMAL(10,2) DEFAULT NULL,
     raw_text TEXT NOT NULL,
     ai_response TEXT DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../styles/admin.css">
+</head>
+<body>
+    <header>
+        <h1>Admin Dashboard</h1>
+    </header>
+
+    <main>
+        <section class="add-user">
+            <h2>Add User</h2>
+            <div class="input-group">
+                <label for="username">Username:</label>
+                <input id="username" type="text" placeholder="Enter username">
+            </div>
+            <div class="input-group">
+                <label for="email">Email:</label>
+                <input id="email" type="email" placeholder="Enter email">
+            </div>
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input id="password" type="password" placeholder="Enter password">
+            </div>
+            <div class="input-group">
+            <select name="role" id="role">
+                <option value="user">user</option>
+                <option value="admin">admin</option>
+                </select>
+            </div>
+            <button id="addUserBtn" class="add">Add User</button>
+        </section>
+
+        <section class="user-management">
+            <h2>Users</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="../scripts/axios.min.js"></script>
+    <script src="../scripts/admin.js"></script>
+</body>
+</html>

@@ -3,6 +3,7 @@ include(__DIR__ . '/../models/User.php');
 include(__DIR__ . '/../connection/connection.php');
 require_once(__DIR__ . '/../services/ResponseService.php');
 
+
 class UserController{
     function getUserById(){
     global $connection;
@@ -21,6 +22,7 @@ class UserController{
 }
     function getAllUsers()
     {
+        
         global $connection;
         $users= User::findAll($connection);
         $usersArray=[];
@@ -34,7 +36,6 @@ class UserController{
     function insertUser(){
         global $connection;
 
-    
         $input = $_POST;
         if (empty($input)) {
             $input = json_decode(file_get_contents("php://input"), true);
@@ -59,7 +60,7 @@ class UserController{
     function deleteUser() {
         global $connection;
 
-        $data = json_decode(file_get_contents("php://input"), associative: true);
+        $data = json_decode(file_get_contents("php://input"), true);
 
         if (empty($data["id"])) {
             echo ResponseService::response(400, "Missing Id");
@@ -67,8 +68,9 @@ class UserController{
         }
 
         $id = $data["id"];
+        $entry = User::find($connection, $id);
+        $success = $entry->delete($connection);
 
-        $success = User::delete($connection, $id);
         if ($success) {
             echo ResponseService::response(200, "deleted");
         } else {
@@ -77,38 +79,45 @@ class UserController{
     }
 
 
-    function updateUser() {
-        global $connection;
 
-        if (empty($_POST["id"])) {
+    function updateUser() {
+
+        global $connection;
+        $input = json_decode(file_get_contents("php://input"), true);
+
+
+        if (empty($input["id"])) {
             return ResponseService::response(400, "ID is required");
         }
 
         $data = [];
-        $id = $_POST["id"];
+        $id = $input["id"];
 
-        if (!empty($_POST["name"])) {
-            $data["name"] = $_POST["name"];
+        if (!empty($input["name"])) {
+            $data["name"] = $input["name"];
         }
         if (!empty($_POST["email"])) {
-            $data["email"] = $_POST["email"];
+            $data["email"] = $input["email"];
         }
         if (!empty($_POST["password"])) {
-            $data["password"] = $_POST["password"];
+            $data["password"] = $input["password"];
         }
         if (!empty($_POST["role"])) {
-            $data["role"] = $_POST["role"];
+            $data["role"] = $input["role"];
         }
 
         if (empty($data)) {
             return ResponseService::response(400, "No fields to update");
         }
 
-        $updatedUser = User::update($connection,$data, $id);
+        $entry = User::find($connection, $id);
+        $entry->update($connection, $data);
         $updatedUser = User::find($connection, $id);
 
 
         return ResponseService::response(200, $updatedUser->toArray());
     }
+
+
 }
 ?>

@@ -22,13 +22,22 @@ class HabitController{
     function getAllHabits()
     {
         global $connection;
-        $habits= Habit::findAll($connection);
-        $habitsArray=[];
-        foreach($habits as $habit){
-            $habitsArray[] = $habit->toArray();
+
+        if (!isset($_GET["user_id"])) {
+            echo ResponseService::response(400, "user_id missing");
+            return;
         }
-        echo ResponseService::response(200, $habitsArray);
-        return;
+
+        $userId = intval($_GET["user_id"]);
+
+        $habits = Habit::where($connection, ["user_id" => $userId]);
+
+        $habitsArr = [];
+        foreach ($habits as $habit) {
+            $habitsArr[] = $habit->toArray();
+        }
+
+        echo ResponseService::response(200, $habitsArr);
     }
 
     function insertHabit(){
@@ -67,7 +76,8 @@ class HabitController{
 
         $id = $data["id"];
 
-        $success = Habit::delete($connection, $id);
+        $entry = Habit::find($connection, $id);
+        $success = $entry->delete($connection);
         if ($success) {
             echo ResponseService::response(200, "deleted");
         } else {
@@ -104,11 +114,14 @@ class HabitController{
             return ResponseService::response(400, "No fields to update");
         }
 
-        $updatedHabit = Habit::update($connection,$data, $id);
-        $updatedHabit = Habit::find($connection, $id);
+        $entry = Entry::find($connection, $id);
+        $entry->update($connection, $data);
+        $updatedHabit = Entry::find($connection, $id);
 
 
         return ResponseService::response(200, $updatedHabit->toArray());
     }
+
+
 }
 ?>
