@@ -22,6 +22,11 @@ loginBtn.addEventListener("click", async () => {
         localStorage.setItem('user-id',userId); 
         console.log("User id saved:", userId);
 
+        console.log (response.data.data[0].role);
+        const userRole = response.data.data[0].role;
+        localStorage.setItem('userRole', userRole);
+        console.log("User's role :", userRole);
+
 
     } catch (error) {
         console.error("Login failed:", error);

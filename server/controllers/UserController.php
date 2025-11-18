@@ -3,6 +3,7 @@ include(__DIR__ . '/../models/User.php');
 include(__DIR__ . '/../connection/connection.php');
 require_once(__DIR__ . '/../services/ResponseService.php');
 
+
 class UserController{
     function getUserById(){
     global $connection;
@@ -21,6 +22,7 @@ class UserController{
 }
     function getAllUsers()
     {
+        
         global $connection;
         $users= User::findAll($connection);
         $usersArray=[];
@@ -34,7 +36,6 @@ class UserController{
     function insertUser(){
         global $connection;
 
-    
         $input = $_POST;
         if (empty($input)) {
             $input = json_decode(file_get_contents("php://input"), true);
@@ -59,7 +60,7 @@ class UserController{
     function deleteUser() {
         global $connection;
 
-        $data = json_decode(file_get_contents("php://input"), associative: true);
+        $data = json_decode(file_get_contents("php://input"), true);
 
         if (empty($data["id"])) {
             echo ResponseService::response(400, "Missing Id");
@@ -67,9 +68,9 @@ class UserController{
         }
 
         $id = $data["id"];
-
         $entry = User::find($connection, $id);
         $success = $entry->delete($connection);
+
         if ($success) {
             echo ResponseService::response(200, "deleted");
         } else {
@@ -78,7 +79,9 @@ class UserController{
     }
 
 
+
     function updateUser() {
+
         global $connection;
         $input = json_decode(file_get_contents("php://input"), true);
 
@@ -114,5 +117,7 @@ class UserController{
 
         return ResponseService::response(200, $updatedUser->toArray());
     }
+
+
 }
 ?>

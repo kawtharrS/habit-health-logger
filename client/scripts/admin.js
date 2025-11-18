@@ -1,7 +1,6 @@
 const username = document .getElementById("username");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
-const role= document.getElementById("role");
 const addUserBtn= document.getElementById("addUserBtn");
 const usersTableBody= document.getElementById("usersTableBody");
 
@@ -10,6 +9,10 @@ const USERS_URL="http://localhost:8080/habit_and_health_logger/server/users";
 const DELETE_USER_URL="http://localhost:8080/habit_and_health_logger/server/users/delete";
 const UPDATE_USER_URL="http://localhost:8080/habit_and_health_logger/server/users/update";
 
+const userRole = localStorage.getItem("userRole");
+if (userRole !== "admin") {
+    window.location.href = "not-authorized.html"; 
+}
 
 addUserBtn.addEventListener("click", addUser);
 document.addEventListener("DOMContentLoaded",  () => {
@@ -54,7 +57,7 @@ async function getUsers()
             usersTableBody.innerHTML=``;
             if(Array.isArray(data))
             {
-                data.forEach((user, index) => {
+                data.forEach((user) => {
                     const row = `
                         <tr>
                             <td>${user.id}</td>

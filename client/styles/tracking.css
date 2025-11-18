@@ -6,166 +6,256 @@
 }
 
 body {
-    background: #f4f4f4;
+    background: #ffffff;
+    min-height: 100vh;
 }
 
 .layout {
     display: flex;
     height: 100vh;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 .habits-panel {
     width: 320px; 
     background: #daddfd;
-    padding: 20px;
-    padding-top:6%;
-    box-shadow: 30px 10px 50px rgb(0, 0, 0);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .habits-panel h3 {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     text-align: center;
     font-size: 1.5rem;
     color: rgb(71, 71, 71);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .habit-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
 }
 
 .habit-btn {
-    padding: 12px;
-    margin-bottom: 10px;
+    padding: 14px 16px;
     border: none;
     background: #3802b8;
     color: white;
     cursor: pointer;
-    border-radius: 15px;
-    font-size: 16px;
+    border-radius: 12px;
+    font-size: 15px;
     text-align: center;
-    margin:3px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(56, 2, 184, 0.3);
+    flex: 1 1 calc(50% - 12px);
+    min-width: 120px;
+}
 
+.habit-btn:hover {
+    background: #1f0166;
 
 }
 
 .habit-btn-add {
-    padding: 12px;
-    margin:3px;
-    border: none;
-    background: #6190d6;
-    color: white;
+    padding: 14px;
+    margin-left:10px;
+    border: 1px dashed #6190d6;
+    background: rgba(97, 144, 214, 0.1);
+    color: #6190d6;
     cursor: pointer;
-    border-radius: 15px;
+    border-radius: 12px;
     font-size: 16px;
     text-align: center;
+    transition: all 0.3s ease;
+    font-weight: 600;
 }
+
+.habit-btn-add:hover {
+    background: #6190d6;
+    color: white;
+}
+
 .habit-btn-delete {
     padding: 12px;
-    margin:5px;
     border: none;
     background: #6190d6;
     color: white;
     cursor: pointer;
-    border-radius: 15px;
-    font-size: 16px;
+    border-radius: 12px;
+    font-size: 14px;
     text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(97, 144, 214, 0.3);
+}
+
+.habit-btn-delete:hover {
+    background: #557ebb;
 }
 
 .selected-list {
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 .selected-item {
     background: #e9ecef;
-    padding: 8px;
-    border-radius: 5px;
-    margin-bottom: 8px;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 12px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid #3802b8;
+    transition: all 0.3s ease;
+}
+
+.selected-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .remove-btn {
     background: #dc3545;
     color: white;
     border: none;
-    padding: 3px 7px;
-    border-radius: 4px;
+    padding: 6px 12px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.remove-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
 }
 
 .edit-btn {
     background: #6190d6;
     color: white;
     border: none;
-    padding: 3px 7px;
-    border-radius: 4px;
+    padding: 6px 12px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.edit-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(97, 144, 214, 0.4);
 }
 
 .chat-container {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(50px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
 }
 
 .chat-box {
     flex: 1;
-    padding: 20px;
+    padding: 25px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    gap: 15px;
+    background: #daddfd;
+    box-shadow: 0 4px 15px rgba(97, 144, 214, 0.4);
+
 }
 
 .message {
-    padding: 10px 15px;
-    margin-bottom: 12px;
-    border-radius: 10px;
+    padding: 15px 20px;
+    border-radius: 18px;
     max-width: 75%;
     word-wrap: break-word;
     font-size: 15px;
+    line-height: 1.4;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    animation: messageAppear 0.3s ease-out;
+}
+
+@keyframes messageAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .user {
     background: #d1e7dd;
     align-self: flex-end;
+    border-bottom-right-radius: 5px;
 }
 
 .bot {
     background: #f8d7da;
     align-self: flex-start;
+    border-bottom-left-radius: 5px;
+    border: 1px solid rgba(248, 215, 218, 0.1);
 }
 
 .input-area {
     display: flex;
-    padding: 15px;
-    border-top: 2px solid #b7b7b7;
-    gap: 10px;
+    padding: 20px;
+    border-top: 1px solid #b7b7b7;
+    gap: 12px;
     background: #ffffff;
+    backdrop-filter: blur(10px);
 }
 
 .input-area input {
     flex: 1;
-    padding: 15px 20px;
+    padding: 16px 20px;
     border: 2px solid #cccccc;
-    border-radius: 10px;
+    border-radius: 15px;
     font-size: 16px;
+    background: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
+
+.input-area input:focus {
+    outline: none;
+    border-color: #3802b8;
+    box-shadow: 0 0 0 3px rgba(56, 2, 184, 0.1);
+    background: white;
 }
 
 .input-area button {
     background: #3802b8;
     color: white;
-    padding: 12px 20px;
-    border-radius: 10px;
+    padding: 16px 24px;
+    border-radius: 15px;
     cursor: pointer;
     font-size: 16px;
-    border:none;
+    border: none;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(56, 2, 184, 0.3);
+}
+
+.input-area button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(56, 2, 184, 0.4);
 }
 
 .popup {
@@ -178,6 +268,20 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    animation: popupAppear 0.3s ease-out;
+}
+
+@keyframes popupAppear {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(5px);
+    }
 }
 
 .hidden {
@@ -186,112 +290,174 @@ body {
 
 .popup-content {
     background: white;
-    padding: 25px;
-    border-radius: 12px;
-    width: 300px;
+    padding: 30px;
+    border-radius: 20px;
+    width: 380px;
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    animation: popupContentAppear 0.3s ease-out;
+}
+
+@keyframes popupContentAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .popup-content input {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 5px;
+    border-radius: 12px;
     border: 1px solid #ccc;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.popup-content input:focus {
+    outline: none;
+    border-color: #3802b8;
+    box-shadow: 0 0 0 3px rgba(56, 2, 184, 0.1);
 }
 
 .popup-buttons {
     display: flex;
     justify-content: flex-end;
-    margin-top: 10px;
-    gap:10px;
+    margin-top: 15px;
+    gap: 12px;
 }
 
-#saveHabit, #closePopup, #deletePopup{
-    padding: 10px 15px;
-    border-radius: 8px;
+#saveHabit, #closePopup, #deletePopup {
+    padding: 12px 20px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
-    font-size: 16px;
-    flex-direction: row;
-
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
 #saveHabit {
-    flex:1;
+    flex: 1;
     background: #041170;
     color: white;
+    box-shadow: 0 4px 15px rgba(4, 17, 112, 0.3);
 }
 
 #saveHabit:hover {
     background: #030a66;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(4, 17, 112, 0.4);
 }
 
 #closePopup {
     background: #dc3545;
     color: white;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
 }
 
 #closePopup:hover {
     background: #b63232;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
 }
 
 #deletePopup {
     background: #787878;
     color: white;
+    box-shadow: 0 4px 15px rgba(120, 120, 120, 0.3);
 }
 
 #deletePopup:hover {
     background: #5f5f5f;
-    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(120, 120, 120, 0.4);
 }
 
 #saveNewHabit {
-    flex:1;
+    flex: 1;
     background: #041170;
     color: white;
-    border:none;
-    padding:10px;
-    border-radius:10px;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(4, 17, 112, 0.3);
+    transition: all 0.3s ease;
 }
 
 #saveNewHabit:hover {
     background: #030a66;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(4, 17, 112, 0.4);
 }
 
 #closeNewPopup {
     background: #dc3545;
     color: white;
-    border:none;
-    padding:10px;
-    border-radius:10px;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+    transition: all 0.3s ease;
 }
 
 #closeNewPopup:hover {
     background: #b63232;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
 }
 
 .send-all-btn {
-    margin-top: 15px;
+    margin-top: 20px;
     background: #041170;
     color: white;
-    padding: 12px;
+    padding: 16px;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 15px;
     cursor: pointer;
     font-size: 16px;
-    border:none;
-    transition: 0.3s;
+    border: none;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(4, 17, 112, 0.3);
 }
-.send-all-btn  a{
-    text-decoration: none;
-    color:#ffffff;
 
+.send-all-btn a {
+    text-decoration: none;
+    color: #ffffff;
+    display: block;
 }
 
 .send-all-btn:hover {
     background: #030a66;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(4, 17, 112, 0.4);
+}
+
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    .habits-panel {
+        width: 100%;
+        padding: 20px;
+    }
+    
+    .habit-btn {
+        flex: 1 1 calc(50% - 8px);
+        min-width: auto;
+    }
 }
