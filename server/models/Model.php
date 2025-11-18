@@ -1,146 +1,90 @@
 <?php
-abstract class Model{
-
+abstract class Model
+{
     protected static string $table;
     protected int $id;
 
-    public static function find(mysqli $connection, string $id, string $primary_key = "id"){
-        $sql = sprintf("SELECT * from %s WHERE %s = ?",
-                       static::$table,
-                       $primary_key);
-                       //static::$primary_key);
+    private static function bindAndExecute(mysqli $connection, string $sql, array $params = []): ?mysqli_stmt
+    {
+        $stmt = $connection->prepare($sql);
+        if (!$stmt) return null;
 
-        $query = $connection->prepare($sql);
-        $query->bind_param("i", $id);
-        $query->execute();               
+        if (!empty($params)) {
+            $types = '';
+            foreach ($params as $value) {
+                $types .= is_int($value) ? 'i' : 's';
+            }
+            $stmt->bind_param($types, ...$params);
+        }
 
-        $data = $query->get_result()->fetch_assoc();
+        $stmt->execute();
+        return $stmt;
+    }
 
+    private static function fetchObjects(mysqli_stmt $stmt): array
+    {
+        $res = $stmt->get_result();
+        $objects = [];
+        while ($data = $res->fetch_assoc()) {
+            $objects[] = new static($data);
+        }
+        return $objects;
+    }
+
+    public static function find(mysqli $connection, string $id, string $primary_key = "id")
+    {
+        $sql = sprintf("SELECT * FROM %s WHERE %s = ?", static::$table, $primary_key);
+        $stmt = self::bindAndExecute($connection, $sql, [$id]);
+        $data = $stmt?->get_result()->fetch_assoc();
         return $data ? new static($data) : null;
     }
 
-    public static function findAll(mysqli $connection, string $primary_key = "id"){
-        //implement this
-        $sql = sprintf("SELECT * from %s",
-                       static::$table,
-                       $primary_key);
-                       //static::$primary_key);
-
-        $query = $connection->prepare($sql);
-        $query->execute();
-        $res = $query->get_result();
-
-        $items = [];
-        while ($data = $res->fetch_assoc()){
-           $items[] = new static($data);
-    }
-        return $items;
+    public static function findAll(mysqli $connection): array
+    {
+        $sql = sprintf("SELECT * FROM %s", static::$table);
+        $stmt = self::bindAndExecute($connection, $sql);
+        return $stmt ? self::fetchObjects($stmt) : [];
     }
 
-    public static function create(mysqli $connection, array $data){
+    public static function create(mysqli $connection, array $data)
+    {
         $columns = implode(', ', array_keys($data));
         $placeholders = implode(', ', array_fill(0, count($data), '?'));
-
         $sql = sprintf("INSERT INTO %s ($columns) VALUES ($placeholders)", static::$table);
 
-        $types = '';
-        $params = [];
+        $stmt = self::bindAndExecute($connection, $sql, array_values($data));
 
-        foreach ($data as $value)
-        {
-            if(is_int($value))
-                $types .= 'i';
-            else
-                $types .= 's';
-            $params[] = $value;
-        }
-
-        $query = $connection->prepare($sql);
-        $query->bind_param($types, ...$params);
-
-        if($query->execute()){
-            $id = $connection->insert_id;  
-            return new static(array_merge(["id" => $id], $data));  
+        if ($stmt && $stmt->affected_rows > 0) {
+            $id = $connection->insert_id;
+            return new static(array_merge(["id" => $id], $data));
         }
 
         return false;
     }
 
+    public function update(mysqli $connection, array $data): bool
+    {
+        $columns = implode(', ', array_map(fn($key) => "$key = ?", array_keys($data)));
+        $sql = sprintf("UPDATE %s SET %s WHERE id = ?", static::$table, $columns);
+        $params = array_merge(array_values($data), [$this->id]);
 
-    public function delete(mysqli $connection, string $primary_key = "id")
+        $stmt = self::bindAndExecute($connection, $sql, $params);
+        return $stmt ? $stmt->affected_rows > 0 : false;
+    }
+
+    public function delete(mysqli $connection, string $primary_key = "id"): bool
     {
         $sql = sprintf("DELETE FROM %s WHERE %s = ?", static::$table, $primary_key);
-        $query = $connection->prepare($sql);
-        $query->bind_param('s', $this->id);
-        $query->execute();
-        if($query->affected_rows >0)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public function update(mysqli $connection, array $data){
-        $column = implode(', ', array_map(fn($key) => "$key = ?", array_keys($data)));
-
-        $sql = sprintf("UPDATE %s SET $column WHERE id = ?", static::$table);
-
-        $types = '';
-        $params = [];
-
-        foreach ($data as $value)
-        {
-            if(is_int($value))
-                $types .= 'i';
-            else
-                $types .= 's';
-            $params[] = $value;
-        }
-
-        $types .= 's';
-        $params[] = $this->id;
-
-        $query = $connection->prepare($sql);
-        $query->bind_param($types, ...$params);
-        if($query -> execute()){
-            return true;
-        }
-        return false;
+        $stmt = self::bindAndExecute($connection, $sql, [$this->id]);
+        return $stmt ? $stmt->affected_rows > 0 : false;
     }
 
     public static function where(mysqli $connection, array $conditions): array
     {
-        $sql =sprintf("SELECT * FROM %s WHERE ", static::$table);
-
-        $clauses = [];
-        $values = [];
-        $types = "";
-
-        foreach ($conditions as $column => $value) {
-            $clauses[] = "$column = ?";
-            $values[] = $value;
-            $types .= is_int($value) ? "i" : "s";
-        }
-
-        $sql .= implode(" AND ", $clauses);
-
-        $query = $connection->prepare($sql);
-        $query->bind_param($types, ...$values);
-        $query->execute();
-        $result = $query->get_result();
-
-        $objects = [];
-        while ($row = $result->fetch_assoc()) {
-            $objects[] = new static($row);
-        }
-
-        return $objects;
+        $clauses = implode(' AND ', array_map(fn($col) => "$col = ?", array_keys($conditions)));
+        $sql = sprintf("SELECT * FROM %s WHERE %s", static::$table, $clauses);
+        $stmt = self::bindAndExecute($connection, $sql, array_values($conditions));
+        return $stmt ? self::fetchObjects($stmt) : [];
     }
-
 }
-
-
-
-
-
 ?>

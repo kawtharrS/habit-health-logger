@@ -1,8 +1,12 @@
+/* ========================== */
+/* GLOBAL STYLES */
+/* ========================== */
 body {
     font-family: Arial, sans-serif;
     background: #daddfd;
     margin: 0;
     padding: 20px;
+    box-sizing: border-box; /* prevent overflow */
 }
 
 .container {
@@ -11,22 +15,23 @@ body {
 }
 
 h1 {
-    text-align: left;
     margin-bottom: 20px;
-    color:#3802b8;
+    color: #3802b8;
 }
 
+/* TABLE WRAPPER */
 .table-wrapper {
-    overflow-x: auto;
     background: white;
     padding: 10px;
     border-radius: 8px;
+    overflow-x: auto; /* optional mini scroll */
 }
 
+/* DESKTOP TABLE */
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 800px;
+    min-width: 600px;
 }
 
 thead {
@@ -37,16 +42,16 @@ thead {
 th, td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
+    text-align: left;
     vertical-align: top;
-    text-align:left;
-}
-
-td:nth-child(2), td:nth-child(3) {
-    max-width: 350px;
     word-wrap: break-word;
 }
+
+/* BUTTONS (DESKTOP) */
 button {
     padding: 5px 10px;
+    width: 80px; /* equal size */
+    text-align: center;
     margin-right: 5px;
     border: none;
     cursor: pointer;
@@ -63,10 +68,31 @@ button.delete {
     background-color: #e74c3c;
     color: #fff;
 }
+
+/* ========================== */
+/* MOBILE TABLE (<700px) */
+/* ========================== */
 @media (max-width: 700px) {
+
+    body {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .table-wrapper {
+        padding: 5px;
+        overflow-x: hidden; /* prevent horizontal scroll */
+    }
 
     table, thead, tbody, th, td, tr {
         display: block;
+        width: 100%;
+        max-width: 100%;
     }
 
     thead {
@@ -74,23 +100,43 @@ button.delete {
     }
 
     tr {
-        margin-bottom: 15px;
-        background: #fff;
+        background: white;
+        margin-bottom: 12px;
         border-radius: 8px;
         padding: 10px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        font-size: 13px;
     }
 
     td {
+        padding: 6px 0;
         border: none;
-        padding: 8px 0;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        flex-wrap: wrap; /* wrap text to avoid overflow */
     }
 
     td::before {
-        content: attr(data-label);
+        content: attr(data-label); /* only active in mobile */
         font-weight: bold;
-        display: block;
-        margin-bottom: 4px;
-        color: #555;
+        color: #3802b8;
+        margin-right: 8px;
+        flex-shrink: 0;
+    }
+
+    .actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+        width: 100%;
+    }
+
+    /* Buttons smaller but equal width */
+    button {
+        padding: 4px 8px;
+        font-size: 12px;
+        width: 48%;
+        margin: 2px 0;
     }
 }

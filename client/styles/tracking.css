@@ -48,6 +48,7 @@ body {
 .habit-btn {
     padding: 14px 16px;
     border: none;
+    margin:5px;
     background: #3802b8;
     color: white;
     cursor: pointer;

@@ -1,117 +1,134 @@
-<?php 
+<?php
 include(__DIR__ . '/../models/Entry.php');
 include(__DIR__ . '/../connection/connection.php');
 require_once(__DIR__ . '/../services/ResponseService.php');
 
-class EntryController{
-    function getEntryById()
+class EntryController
+{
+    private mysqli $connection;
+
+    public function __construct()
     {
-        global $connection; 
-        if(isset($_GET["id"]))
-        {
-            $id = $_GET["id"];
-        }else{
-            echo ResponseService::response(500, "ID is Missing");
+        global $connection;
+        $this->connection = $connection;
+    }
+
+    private function getInput(): array
+    {
+        $input = $_POST;
+        if (empty($input)) {
+            $input = json_decode(file_get_contents("php://input"), true);
+        }
+        return $input ?? [];
+    }
+
+    private function fetchEntryById($id): ?Entry
+    {
+        $entry = Entry::find($this->connection, $id);
+        if (!$entry) {
+            echo ResponseService::response(404, "Entry not found");
+            return null;
+        }
+        return $entry;
+    }
+
+    public function getEntryById()
+    {
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            echo ResponseService::response(400, "ID is missing");
             return;
         }
 
-        $entry = Entry::find($connection, $id);
-        echo ResponseService::response(200, $entry->toArray());
-        return;
+        $entry = $this->fetchEntryById($id);
+        if ($entry) {
+            echo ResponseService::response(200, $entry->toArray());
+        }
     }
 
-
-    function getAllEntries()
+    public function getAllEntries()
     {
-        global $connection;
-
-        if (!isset($_GET["user_id"])) {
+        $userId = $_GET['user_id'] ?? null;
+        if (!$userId) {
             echo ResponseService::response(400, "user_id missing");
             return;
         }
 
-        $userId = intval($_GET["user_id"]);
+        $entries = Entry::where($this->connection, ["user_id" => intval($userId)]);
+        $entriesArr = array_map(fn($entry) => $entry->toArray(), $entries);
 
-        $entries = Entry::where($connection, ["user_id" => $userId]);
-        $habitsArray=[];
-
-        foreach($entries as $entry)
-        {
-            $habitsArray[]=$entry->toArray();
-        }
-        echo ResponseService::response(200, $habitsArray);
+        echo ResponseService::response(200, $entriesArr);
     }
 
-
-    function insertEntry()
+    public function insertEntry()
     {
-        global $connection; 
-        $input = $_POST;
+        $input = $this->getInput();
 
-        if(empty($input))
-        {
-            $input = json_decode(file_get_contents("php://input"), true);
+        if (!isset($input["user_id"], $input["raw_text"])) {
+            echo ResponseService::response(400, "Missing required fields");
+            return;
         }
-        if(!isset($input["user_id"], $input["raw_text"], $input["ai_response"]))
-            return ResponseService::response(400, "Missing REquired Fields");
 
         $data = [
             'user_id' => $input["user_id"],
             'habit_id' => $input["habit_id"] ?? null,
             'raw_text' => $input["raw_text"],
             'ai_response' => $input["ai_response"] ?? null,
-            'created_at' => $input["created_at"] ?? null  
-
+            'created_at' => $input["created_at"] ?? null
         ];
 
-        $entry = Entry::create($connection, $data);
+        $entry = Entry::create($this->connection, $data);
         echo ResponseService::response(200, $entry->toArray());
     }
 
-    function deleteEntry(){
-        global $connection;
-        $data = json_decode(file_get_contents("php://input"), true);
-        if(empty($data["id"])){
+    public function deleteEntry()
+    {
+        $input = $this->getInput();
+        $id = $input['id'] ?? null;
+
+        if (!$id) {
             echo ResponseService::response(400, "Missing ID");
             return;
         }
-        $id=$data["id"];
-        $entry = Entry::find($connection, $id);
-        $success = $entry->delete($connection);
-        if($success){
-            echo ResponseService::response(200, "deleted");
-        }
-        else{
-            echo ResponseService::response(500, "failed");
+
+        $entry = $this->fetchEntryById($id);
+        if ($entry) {
+            $success = $entry->delete($this->connection);
+            echo ResponseService::response($success ? 200 : 500, $success ? "Deleted" : "Failed to delete");
         }
     }
 
-   function updateEntry() {
-        global $connection;
+    public function updateEntry()
+    {
+        $input = $this->getInput();
+        $id = $input['id'] ?? null;
 
-        $input = $_POST;
-
-        if (empty($input)) {
-            $input = json_decode(file_get_contents("php://input"), true);
+        if (!$id) {
+            echo ResponseService::response(400, "ID is required");
+            return;
         }
 
+        $entry = $this->fetchEntryById($id);
+        if (!$entry) return;
+
+        $fields = ['raw_text', 'ai_response', 'habit_id', 'created_at'];
         $data = [];
-        $id = $input["id"];
 
-        if (!empty($input["raw_text"])) {
-            $data["raw_text"] = $input["raw_text"];
+        foreach ($fields as $field) {
+            if (isset($input[$field])) {
+                $data[$field] = $input[$field];
+            }
         }
-
 
         if (empty($data)) {
-            return ResponseService::response(400, "No fields");
+            echo ResponseService::response(400, "No fields to update");
+            return;
         }
-        $entry = Entry::find($connection, $id);
-        $entry->update($connection, $data);
-        $updatedEntry = Entry::find($connection, $id);
 
-        return ResponseService::response(200, $updatedEntry->toArray());
+        $entry->update($this->connection, $data);
+        $updatedEntry = Entry::find($this->connection, $id);
+
+        echo ResponseService::response(200, $updatedEntry->toArray());
     }
-
 }
 ?>
