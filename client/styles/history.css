@@ -1,12 +1,8 @@
-/* ========================== */
-/* GLOBAL STYLES */
-/* ========================== */
 body {
     font-family: Arial, sans-serif;
     background: #daddfd;
     margin: 0;
     padding: 20px;
-    box-sizing: border-box; /* prevent overflow */
 }
 
 .container {
@@ -19,19 +15,15 @@ h1 {
     color: #3802b8;
 }
 
-/* TABLE WRAPPER */
 .table-wrapper {
     background: white;
     padding: 10px;
     border-radius: 8px;
-    overflow-x: auto; /* optional mini scroll */
 }
 
-/* DESKTOP TABLE */
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 600px;
 }
 
 thead {
@@ -43,21 +35,20 @@ th, td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
     text-align: left;
-    vertical-align: top;
-    word-wrap: break-word;
 }
 
-/* BUTTONS (DESKTOP) */
 button {
     padding: 5px 10px;
-    width: 80px; /* equal size */
+    width: 80px;          
     text-align: center;
     margin-right: 5px;
     border: none;
     cursor: pointer;
     border-radius: 3px;
     transition: 0.3s;
+    margin-bottom: 5px;
 }
+
 
 button.edit {
     background-color: #3498db;
@@ -68,42 +59,39 @@ button.delete {
     background-color: #e74c3c;
     color: #fff;
 }
-
-/* ========================== */
-/* MOBILE TABLE (<700px) */
-/* ========================== */
 @media (max-width: 700px) {
+
+    * {
+        box-sizing: border-box;  
+    }
 
     body {
         padding: 10px;
         font-size: 14px;
-    }
-
-    h1 {
-        font-size: 20px;
-        margin-bottom: 15px;
+        overflow-x: hidden;     
     }
 
     .table-wrapper {
-        padding: 5px;
-        overflow-x: hidden; /* prevent horizontal scroll */
+        width: 100%;
+        overflow-x: hidden;
+    }
+    thead{
+        display:none;
     }
 
-    table, thead, tbody, th, td, tr {
+    table, tbody, th, td, tr {
         display: block;
         width: 100%;
-        max-width: 100%;
-    }
-
-    thead {
-        display: none;
+        max-width: 100%;    
+        overflow-x: hidden;
+        word-wrap: break-word;   
     }
 
     tr {
         background: white;
         margin-bottom: 12px;
         border-radius: 8px;
-        padding: 10px;
+        padding: 12px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         font-size: 13px;
     }
@@ -114,29 +102,19 @@ button.delete {
         display: flex;
         justify-content: space-between;
         width: 100%;
-        flex-wrap: wrap; /* wrap text to avoid overflow */
     }
 
     td::before {
-        content: attr(data-label); /* only active in mobile */
+        content: attr(data-label);
         font-weight: bold;
         color: #3802b8;
-        margin-right: 8px;
+        margin-right: 10px;
         flex-shrink: 0;
     }
 
-    .actions {
-        display: flex;
-        justify-content: space-between;
-        gap: 5px;
-        width: 100%;
-    }
-
-    /* Buttons smaller but equal width */
     button {
-        padding: 4px 8px;
-        font-size: 12px;
+        padding: 5px 8px;
         width: 48%;
-        margin: 2px 0;
+        font-size: 12px;
     }
 }
