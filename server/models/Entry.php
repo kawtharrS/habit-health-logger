@@ -5,7 +5,6 @@ class Entry extends Model {
     protected int $id;
     private int $user_id;
     private ?int $habit_id;
-    private ?float $value;
     private string $raw_text;
     private string $ai_response;
     private ?string $created_at;
@@ -17,11 +16,11 @@ class Entry extends Model {
         $this->id = $data["id"];
         $this->user_id = $data["user_id"];
         $this->habit_id = $data["habit_id"] ?? null;
-        $this->value = isset($data["value"]) ? (float)$data["value"] : null;
         $this->raw_text = $data["raw_text"];
         $this->ai_response = $data["ai_response"] ?? null;
-        $this->created_at = $data["created_at"];
-        $this->updated_at = $data["updated_at"];
+        $this->created_at = $data['created_at'] ?? null;
+        $this->updated_at = $data['updated_at'] ?? null;
+
     }
 
     public function getID(): int {
@@ -42,12 +41,6 @@ class Entry extends Model {
         $this->habit_id = $habit_id;
     }
 
-    public function getValue(): ?float {
-        return $this->value;
-    }
-    public function setValue(?float $value): void {
-        $this->value = $value;
-    }
 
 
     public function getRawText(): string {
@@ -73,8 +66,8 @@ class Entry extends Model {
     }
 
     public function __toString(): string {
-        return $this->id . " | " . $this->user_id . " | " . $this->habit_id . " | " . $this->value . 
-               " | "  . $this->raw_text . " | " . $this->ai_response;
+        return $this->id . " | " . $this->user_id . " | " . $this->habit_id . " | " 
+                . $this->raw_text . " | " . $this->ai_response;
     }
 
     public function toArray(): array {
@@ -82,7 +75,6 @@ class Entry extends Model {
             "id" => $this->id,
             "user_id" => $this->user_id,
             "habit_id" => $this->habit_id,
-            "value" => $this->value,
             "raw_text" => $this->raw_text,
             "ai_response" => $this->ai_response,
             "created_at" => $this->created_at,

@@ -49,8 +49,11 @@ class EntryController{
 
         $data = [
             'user_id' => $input["user_id"],
+            'habit_id' => $input["habit_id"] ?? null,
             'raw_text' => $input["raw_text"],
-            'ai_response' => $input["ai_response"]
+            'ai_response' => $input["ai_response"] ?? null,
+            'created_at' => $input["created_at"] ?? null  
+
         ];
 
         $entry = Entry::create($connection, $data);
@@ -87,15 +90,10 @@ class EntryController{
         $data = [];
         $id = $input["id"];
 
-        if (!empty($input["user_id"])) {
-            $data["user_id"] = $input["user_id"];
-        }
         if (!empty($input["raw_text"])) {
             $data["raw_text"] = $input["raw_text"];
         }
-        if (!empty($input["ai_response"])) {
-            $data["ai_response"] = $input["ai_response"];
-        }
+
 
         if (empty($data)) {
             return ResponseService::response(400, "No fields");

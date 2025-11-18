@@ -17,14 +17,15 @@ const newHabitUnit = document.getElementById("newHabitUnit");
 const newHabitActive = document.getElementById("newHabitActive");
 const deletePopup = document.getElementById("deletePopup");
 
-
 const URL_API = "http://localhost:8080/habit_and_health_logger/server/public/review.php";
 const ADD_HABIT_URL = "http://localhost:8080/habit_and_health_logger/server/habits/create";
 const ALL_HABITS_URL = "http://localhost:8080/habit_and_health_logger/server/habits";
 const DELETE_HABITS_URL = "http://localhost:8080/habit_and_health_logger/server/habits/delete";
+const USER_INPUT_URL = "http://localhost:8080/habit_and_health_logger/server/entries/create";
 
 let selectedHabits = {};
 let currentHabit = "";
+const userId = localStorage.getItem("user-id");
 
 document.addEventListener("DOMContentLoaded", async () => {
     await loadUserHabits();
@@ -38,17 +39,33 @@ function addMessage(text, type) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-async function sendMessage(habit_messages = "") {
+async function sendMessage(habit_messages = "", habitId = null) {
     let message = habit_messages || input.value.trim();
-    if (!habit_messages) addMessage(message, "user");
-    input.value = "";
     if (!message) return;
 
+    addMessage(message, "user");
+    input.value = "";
+
     try {
+        // Send message to AI
         const response = await axios.post(URL_API, { message }, { headers: { "Content-Type": "application/json" } });
-        createAIMessage(response.data.reply);
+        const aiReply = response.data.reply || "";
+        createAIMessage(aiReply);
+
+        // Save entry
+        const saveData = {
+            user_id: userId,
+            raw_text: message,
+            ai_response: aiReply
+        };
+        if (habitId) saveData.habit_id = habitId;
+
+        const saved = await axios.post(USER_INPUT_URL, saveData, { headers: { "Content-Type": "application/json" } });
+        console.log("Saved entry:", saved.data);
+
     } catch (err) {
         createAIMessage("Sorry, I could not process your request.");
+        console.log("Error saving message:", err);
     }
 }
 
@@ -74,21 +91,19 @@ function attachHabitListeners() {
 
 saveHabit.addEventListener("click", async () => {
     let value = parseFloat(habitValue.value.trim());
-    if (isNaN(value) || value < 0) {
-        alert("Value cannot be less than 0");
-        return;
-    }
+    if (isNaN(value) || value < 0) return alert("Value cannot be less than 0");
 
-    try {
-        await axios.post(URL_API, { habit_name: currentHabit, value });
-        const btn = document.querySelector(`.habit-btn[data-habit="${currentHabit}"]`);
-        const unit = btn?.dataset.unit || "";
-        selectedHabits[currentHabit] = value + unit;
-        popup.classList.add("hidden");
-        refreshSelectedList();
-    } catch (error) {
-        console.log("Error saving habit:", error);
-    }
+    const habitBtn = document.querySelector(`.habit-btn[data-habit="${currentHabit}"]`);
+    const habitId = habitBtn?.dataset.id || null;
+
+    // Send message and save with habit ID
+    await sendMessage(`${currentHabit}: ${value}`, habitId);
+
+    const unit = habitBtn?.dataset.unit || "";
+    selectedHabits[currentHabit] = value + unit;
+
+    popup.classList.add("hidden");
+    refreshSelectedList();
 });
 
 closePopup.addEventListener("click", () => popup.classList.add("hidden"));
@@ -126,10 +141,7 @@ function refreshSelectedList() {
 }
 
 sendAllBtn.addEventListener("click", () => {
-    if (Object.keys(selectedHabits).length === 0) {
-        alert("No habits selected!");
-        return;
-    }
+    if (Object.keys(selectedHabits).length === 0) return alert("No habits selected!");
 
     let finalMessage = "Today's Habits:\n";
     for (let habit in selectedHabits) finalMessage += `${habit}: ${selectedHabits[habit]}\n`;
@@ -146,19 +158,15 @@ closeNewPopup.addEventListener("click", () => addHabitPopup.classList.add("hidde
 saveNewHabit.addEventListener("click", createHabit);
 
 async function createHabit() {
-    if (!newHabitName.value || !newHabitUnit.value) {
-        alert("You should insert all values");
-        return;
-    }
+    if (!newHabitName.value || !newHabitUnit.value) return alert("You should insert all values");
 
     try {
-        const value=null;
-        const userId = localStorage.getItem("user-id");
+        const value = null;
         const response = await axios.post(ADD_HABIT_URL, {
             user_id: userId,
             habit_name: newHabitName.value,
             unit: newHabitUnit.value,
-            target_value:value,
+            target_value: value,
             is_active: newHabitActive.checked ? 1 : 0
         });
         console.log("Habit created:", response);
@@ -176,11 +184,8 @@ async function createHabit() {
 
 async function loadUserHabits() {
     try {
-        const userId = localStorage.getItem("user-id");
-        console.log(userId);
         const response = await axios.get(`${ALL_HABITS_URL}?user_id=${userId}`);
         const habits = response.data.data;
-        console.log(habits)
         const habitsPanel = document.querySelector(".habits-panel");
 
         document.querySelectorAll(".habit-btn").forEach(btn => { if (btn.id !== "addHabit") btn.remove(); });
@@ -201,24 +206,15 @@ async function loadUserHabits() {
     }
 }
 
-
-
 deletePopup.addEventListener("click", deleteHabits);
 
 async function deleteHabits() {
-    if (!currentHabit) {
-        alert("Please select a habit to delete!");
-        return;
-    }
+    if (!currentHabit) return alert("Please select a habit to delete!");
 
     const habitBtn = document.querySelector(`.habit-btn[data-habit="${currentHabit}"]`);
     const habitId = habitBtn?.dataset.id;
 
-    if (!habitId) {
-        alert("Habit ID not found!");
-        return;
-    }
-
+    if (!habitId) return alert("Habit ID not found!");
     if (!confirm(`Are you sure you want to delete ${currentHabit}?`)) return;
 
     try {
@@ -226,14 +222,11 @@ async function deleteHabits() {
         console.log("Deleted:", response.data);
 
         if (selectedHabits[currentHabit]) delete selectedHabits[currentHabit];
-
         currentHabit = "";
 
         refreshSelectedList();
         await loadUserHabits();
-
         popup.classList.add("hidden");
-
     } catch (error) {
         console.log("Error deleting habit:", error);
         alert("Failed to delete habit");
