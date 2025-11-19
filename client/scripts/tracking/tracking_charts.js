@@ -60,9 +60,6 @@ async function getAllTimeHabits() {
     }
 }
 
-
-
-
 function drawBarChart(svgID, obj, color) {
     const svg = d3.select(svgID);
 
@@ -123,11 +120,11 @@ async function loadAndDrawCharts() {
     }
 
     drawBarChart("#weeklyTopHabitChart", weeklyTopHabitCount, "steelblue");
-    drawBarChart("#weeklyWeakHabitChart", weeklyWeakHabitCount, "tomato");
+    drawBarChart("#weeklyWeakHabitChart", weeklyWeakHabitCount, "steelblue");
 
     const { allTimeTopHabitCount, allTimeWeakHabitCount } = await getAllTimeHabits();
 
-    drawBarChart("#TopHabitChart", allTimeTopHabitCount, "steelblue");
+    drawBarChart("#TopHabitChart", allTimeTopHabitCount, "tomato");
     drawBarChart("#WeakHabitChart", allTimeWeakHabitCount, "tomato");
 }
 
