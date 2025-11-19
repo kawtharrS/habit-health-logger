@@ -20,13 +20,17 @@ async function sendMessage(habit_messages = "", habitId = null) {
         // Send message to AI
         const response = await axios.post(URLS.api, { message }, { headers: { "Content-Type": "application/json" } });
         const aiReply = response.data.reply || "";
+        const analysis= response.data.analysis || "";
         createAIMessage(aiReply);
 
         // Save entry
         const saveData = {
             user_id: userId,
             raw_text: message,
-            ai_response: aiReply
+            top_habit: analysis.top_habit,
+            weak_habit:analysis.weak_habit,
+            advice:analysis.advice,
+            rating:analysis.rating
         };
         if (habitId) saveData.habit_id = habitId;
 

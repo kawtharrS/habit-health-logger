@@ -24,13 +24,10 @@ async function getHistory()
                     const row = `
                         <tr>
                             <td>${entry.raw_text}</td>
-                            <td>${entry.ai_response}</td>
+                            <td>${entry.top_habit}</td>
+                            <td>${entry.weak_habit}</td>
+                            <td>${entry.rating}</td>
                             <td>${entry.created_at}</td>
-                            <td>${entry.updated_at}</td>
-                            <td>
-                                <button class="edit" data-action="edit">Edit</button>
-                                <button class="delete" data-action="edit">Delete</button>
-                            </td>
                         </tr>`;
                     historyTableBody.innerHTML += row;
                 });

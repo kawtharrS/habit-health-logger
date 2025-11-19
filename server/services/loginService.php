@@ -26,7 +26,7 @@ function login() {
     $data = $query->get_result()->fetch_assoc();
 
     if (!empty($data) && password_verify($password, $data['password'])) {
-        ResponseService::result(200, "You are logged in", ["id" => $data['id'], ["role"=>$data['role']]]);
+        ResponseService::result(200, "You are logged in", data: ["id" => $data['id'], ["role"=>$data['role']]]);
     } else {
         ResponseService::result(401, "Invalid email or password");
     }

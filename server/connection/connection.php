@@ -4,7 +4,7 @@ header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header(header: "Content-Type: application/json");
 
-$connection = new mysqli ("localhost", "root","","fse2", 3310);
+$connection = new mysqli ("localhost", "root","","tracking", 3310);
 
 if ($connection -> connect_error){
     die ("connection error:" . $connection-> connect_error);
