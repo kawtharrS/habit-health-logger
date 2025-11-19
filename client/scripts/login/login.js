@@ -30,15 +30,10 @@ loginBtn.addEventListener("click", async () => {
         let isLogin = false;
         if (response.status === 200) 
             isLogin=true;
-        
+
         localStorage.setItem('isLogin', isLogin); 
 
-        const login = localStorage.getItem("isLogin");
-        console.log(login);
-
-
         alert("Welcome you are logged in");
-
 
     } catch (error) {
         console.log(error);

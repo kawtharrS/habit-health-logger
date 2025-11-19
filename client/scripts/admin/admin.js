@@ -1,4 +1,3 @@
-const userRole = localStorage.getItem("userRole");
 if (userRole !== "admin") {
     window.location.href = "not-authorized.html"; 
 }

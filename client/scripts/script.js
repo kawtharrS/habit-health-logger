@@ -22,9 +22,10 @@ if (isLogin === "true") {
     console.log(isLogin);
     tracking.classList.remove("hidden");
     logged.classList.add("hidden");
-    console.log("user logged in → show tracking");
+    console.log("user logged in");
+    console.log(userRole);
 } else {
     logged.classList.remove("hidden");
     tracking.classList.add("hidden");
-    console.log("user not logged in → show login");
+    console.log("user not logged in");
 }
