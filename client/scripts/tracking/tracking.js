@@ -1,6 +1,9 @@
 let selectedHabits = {};
 let currentHabit = "";
 
+if (login !== "true") {
+    window.location.href = "not-authenticated.html"; 
+}
 function addMessage(text, type) {
     const div = document.createElement("div");
     div.classList.add("message", type === "ai" ? "bot" : "user");

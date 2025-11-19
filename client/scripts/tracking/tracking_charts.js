@@ -1,63 +1,25 @@
-function filterEntriesByWeek(entries, data = "date") {
-    const now = new Date();
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - now.getDay());  //moves to sunday 
-    return entries.filter(entry => {
-        if (!entry[data]) return false;
-        const entryDate = new Date(entry[data]);
-        return entryDate >= startOfWeek && entryDate <= now;
-    });
+if (login !== "true") {
+    window.location.href = "not-authenticated.html"; 
 }
 
-function countHabits(entries, field) {
-    const count = {};
-    entries.forEach(entry => {
-        const habit = entry[field];
-        if (habit) count[habit] = (count[habit] || 0) + 1;
-    });
-    return count;
-}
+loadAndDrawCharts();
+getAdvice();
+getRate()
 
-async function getWeeklyHabits() {
-    try {
-        const response = await axios.get(`${URLS.entries}?user_id=${userId}`);
-        const entries = response.data.data;
+async function loadAndDrawCharts() {
+    const { weeklyTopHabitCount, weeklyWeakHabitCount, weeklyEntries } = await getWeeklyHabits();
 
-        console.log(entries);
-
-        const dateField = "created_at";
-
-        const weeklyEntries = filterEntriesByWeek(entries, dateField);
-        console.log(weeklyEntries);
-
-        const weeklyTopHabitCount = countHabits(weeklyEntries, "top_habit");
-        const weeklyWeakHabitCount = countHabits(weeklyEntries, "weak_habit");
-
-        console.log(weeklyTopHabitCount);
-        console.log(weeklyWeakHabitCount);
-        return { weeklyTopHabitCount, weeklyWeakHabitCount, weeklyEntries };
-    } catch (error) {
-        console.log(error);
+    if (weeklyEntries.length === 0) {
+        console.warn("No weekly data available to draw charts.");
     }
-}
 
-async function getAllTimeHabits() {
-    try {
-        const response = await axios.get(`${URLS.entries}?user_id=${userId}`);
-        const entries = response.data.data;
+    drawBarChart("#weeklyTopHabitChart", weeklyTopHabitCount, "steelblue");
+    drawBarChart("#weeklyWeakHabitChart", weeklyWeakHabitCount, "steelblue");
 
-        console.log(entries);
+    const { allTimeTopHabitCount, allTimeWeakHabitCount } = await getAllTimeHabits();
 
-        const allTimeTopHabitCount = countHabits(entries, "top_habit");
-        const allTimeWeakHabitCount = countHabits(entries, "weak_habit");
-
-        console.log(allTimeTopHabitCount);
-        console.log(allTimeWeakHabitCount);
-
-        return { allTimeTopHabitCount, allTimeWeakHabitCount, entries };
-    } catch (error) {
-        console.log(error);
-    }
+    drawBarChart("#TopHabitChart", allTimeTopHabitCount, "tomato");
+    drawBarChart("#WeakHabitChart", allTimeWeakHabitCount, "tomato");
 }
 
 function drawBarChart(svgID, obj, color) {
@@ -106,78 +68,14 @@ function drawBarChart(svgID, obj, color) {
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(x))
         .selectAll("text")
-        .attr("transform", "rotate(-20)")
+        .attr("transform", "rotate(-22)")
         .style("text-anchor", "end");
 
     g.append("g").call(d3.axisLeft(y));
 }
 
-async function loadAndDrawCharts() {
-    const { weeklyTopHabitCount, weeklyWeakHabitCount, weeklyEntries } = await getWeeklyHabits();
 
-    if (weeklyEntries.length === 0) {
-        console.warn("No weekly data available to draw charts.");
-    }
 
-    drawBarChart("#weeklyTopHabitChart", weeklyTopHabitCount, "steelblue");
-    drawBarChart("#weeklyWeakHabitChart", weeklyWeakHabitCount, "steelblue");
 
-    const { allTimeTopHabitCount, allTimeWeakHabitCount } = await getAllTimeHabits();
 
-    drawBarChart("#TopHabitChart", allTimeTopHabitCount, "tomato");
-    drawBarChart("#WeakHabitChart", allTimeWeakHabitCount, "tomato");
-}
 
-async function getAdvice() {
-    try {
-        const data = await axios.get(`${URLS.entries}?user_id=${userId}`);
-        const adviceArray = data.data.data;
-
-        const adviceList = adviceArray.map(a => a.advice).filter(Boolean);
-
-        const response = await axios.post(
-            URLS.advice,
-            { advice: adviceList },
-            { headers: { "Content-Type": "application/json" } }
-        );
-
-        document.getElementById("adviceContent").innerText = response.data.reply;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-async function getRate()
-{
-    try{
-        const response = await axios.get(`${URLS.entries}?user_id=${userId}`);
-        const entries = response.data.data;
-
-        let sum=0;
-        entries.forEach(entry =>{
-            const i = entry.rating;
-            sum+=i;
-        });
-
-        console.log("sum",sum);
-        console.log("length", entries.length);
-        const length =entries.length;
-        if(length>0)
-        {
-            const average = Math.round(sum/length);
-            document.getElementById("ratingContent").innerText = average;
-        }
-        else{
-            alert("Nothing to show!");
-        }
-        
-    }
-    catch(error)
-    {
-        console.log(error);
-    }
-}
-
-loadAndDrawCharts();
-getAdvice();
-getRate()

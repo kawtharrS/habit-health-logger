@@ -10,7 +10,6 @@ if (!$input || !isset($input["advice"])) {
     ]);
     exit;
 }
-$input = json_decode(file_get_contents('php://input'), true);
 
 if (!$input || !isset($input["advice"])) {
     echo json_encode(["reply" => "No advice received"]);
@@ -21,7 +20,7 @@ $adviceArray = array_filter($input["advice"]);
 $user_content = implode("\n", $adviceArray);   // join into a single string
 
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, "https://api.openai.com/v1/responses");
+curl_setopt($ch, CURLOPT_URL, $URL_OPENAI);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POST, true);
 
@@ -47,7 +46,7 @@ if (curl_errno($ch)) {
     exit;
 }
 
-curl_close($ch);
+curl_close(handle: $ch);
 
 $json = json_decode($response, true);
 

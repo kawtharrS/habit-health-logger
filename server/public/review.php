@@ -14,7 +14,7 @@ if (!$input || !isset($input["message"])) {
 $user_content = $input["message"];
 
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, "https://api.openai.com/v1/responses");
+curl_setopt($ch, CURLOPT_URL, $URL_OPENAI);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POST, true);
 

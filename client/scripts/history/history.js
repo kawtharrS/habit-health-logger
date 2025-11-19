@@ -1,3 +1,7 @@
+if (login !== "true") {
+    window.location.href = "not-authenticated.html"; 
+}
+
 window.onload=getHistory;
 
 async function getHistory()
