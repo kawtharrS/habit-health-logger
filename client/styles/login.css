@@ -148,7 +148,17 @@ button {
     color:#fff
 }
 
-#loginBtn{
-    text-decoration:none;
-    color:#fff
+.login-btn {
+    background-color: #4438ff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-btn a {
+    text-decoration: none;
+    color: white; 
 }

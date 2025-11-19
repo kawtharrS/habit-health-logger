@@ -34,9 +34,12 @@ loginBtn.addEventListener("click", async () => {
         localStorage.setItem('isLogin', isLogin); 
 
         alert("Welcome you are logged in");
-
+        window.location.href = "/client/index.html";
     } catch (error) {
         console.log(error);
         console.error("Login failed:", error);
     }
 });
+
+const logoutBtn = document.getElementById("logout");
+

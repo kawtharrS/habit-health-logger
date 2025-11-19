@@ -1,10 +1,11 @@
+const cmn ="http://localhost/habit_and_health_logger/server"
 URLS={
-    users :"http://localhost/habit_and_health_logger/server/users",
-    login: "http://localhost/habit_and_health_logger/server/services/loginService.php", 
-    entries: "http://localhost/habit_and_health_logger/server/entries", 
-    api:"http://localhost/habit_and_health_logger/server/public/review.php",
-    habits:"http://localhost/habit_and_health_logger/server/habits", 
-    advice:"http://localhost/habit_and_health_logger/server/public/advice.php"
+    users : cmn + "/users",
+    login: cmn + "/services/loginService.php", 
+    entries: cmn + "/entries", 
+    api: cmn + "/public/review.php",
+    habits: cmn + "/habits", 
+    advice: cmn + "/public/advice.php"
 
 }
 const userId = localStorage.getItem("user-id");
