@@ -36,7 +36,7 @@ async function sendMessage(habit_messages = "", habitId = null) {
 
         const saved = await axios.post(URLS.entries+"/create", saveData, { headers: { "Content-Type": "application/json" } });
         console.log("Saved entry:", saved.data);
-
+        
     } catch (err) {
         createAIMessage("Sorry, I could not process your request.");
         console.log("Error saving message:", err);
