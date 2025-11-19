@@ -6,9 +6,12 @@ class Entry extends Model {
     private int $user_id;
     private ?int $habit_id;
     private string $raw_text;
-    private string $ai_response;
     private ?string $created_at;
     private ?string $updated_at;
+    private ?string $top_habit;
+    private ?string $weak_habit;
+    private ?string $advice;
+    private ?int $rating;
 
     protected static string $table = "entries";
 
@@ -17,10 +20,12 @@ class Entry extends Model {
         $this->user_id = $data["user_id"];
         $this->habit_id = $data["habit_id"] ?? null;
         $this->raw_text = $data["raw_text"];
-        $this->ai_response = $data["ai_response"] ?? null;
         $this->created_at = $data['created_at'] ?? null;
         $this->updated_at = $data['updated_at'] ?? null;
-
+        $this->top_habit = $data['top_habit'] ?? null;
+        $this->weak_habit = $data['weak_habit'] ?? null;
+        $this->advice = $data['advice'] ?? null;
+        $this->rating = $data['rating'] ?? null;
     }
 
     public function getID(): int {
@@ -41,8 +46,6 @@ class Entry extends Model {
         $this->habit_id = $habit_id;
     }
 
-
-
     public function getRawText(): string {
         return $this->raw_text;
     }
@@ -50,24 +53,46 @@ class Entry extends Model {
         $this->raw_text = $raw_text;
     }
 
-    public function getAiResponse(): ?string {
-        return $this->ai_response;
+    public function getTopHabit(): ?string {
+        return $this->top_habit;
     }
-    public function setAiResponse(?string $ai_response): void {
-        $this->ai_response = $ai_response;
+    public function setTopHabit(?string $top_habit): void {
+        $this->top_habit = $top_habit;
     }
 
-    public function getCreatedAt(): string {
+    public function getWeakHabit(): ?string {
+        return $this->weak_habit;
+    }
+    public function setWeakHabit(?string $weak_habit): void {
+        $this->weak_habit = $weak_habit;
+    }
+
+    public function getAdvice(): ?string {
+        return $this->advice;
+    }
+    public function setAdvice(?string $advice): void {
+        $this->advice = $advice;
+    }
+
+    public function getRating(): ?int {
+        return $this->rating;
+    }
+    public function setRating(?int $rating): void {
+        $this->rating = $rating;
+    }
+
+    public function getCreatedAt(): ?string {
         return $this->created_at;
     }
-
-    public function getUpdatedAt(): string {
+    public function getUpdatedAt(): ?string {
         return $this->updated_at;
     }
 
     public function __toString(): string {
         return $this->id . " | " . $this->user_id . " | " . $this->habit_id . " | " 
-                . $this->raw_text . " | " . $this->ai_response;
+            . $this->raw_text . " | " 
+            . $this->top_habit . " | " . $this->weak_habit . " | " 
+            . $this->advice . " | " . $this->rating;
     }
 
     public function toArray(): array {
@@ -76,7 +101,10 @@ class Entry extends Model {
             "user_id" => $this->user_id,
             "habit_id" => $this->habit_id,
             "raw_text" => $this->raw_text,
-            "ai_response" => $this->ai_response,
+            "top_habit" => $this->top_habit,
+            "weak_habit" => $this->weak_habit,
+            "advice" => $this->advice,
+            "rating" => $this->rating,
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at
         ];

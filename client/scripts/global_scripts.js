@@ -1,11 +1,15 @@
 URLS={
-    users :"http://localhost:8080/habit_and_health_logger/server/users",
-    login: "http://localhost:8080/habit_and_health_logger/server/services/loginService.php", 
-    entries: "http://localhost:8080/habit_and_health_logger/server/entries", 
-    api:"http://localhost:8080/habit_and_health_logger/server/public/review.php",
-    habits:"http://localhost:8080/habit_and_health_logger/server/habits"
+    users :"http://localhost/habit_and_health_logger/server/users",
+    login: "http://localhost/habit_and_health_logger/server/services/loginService.php", 
+    entries: "http://localhost/habit_and_health_logger/server/entries", 
+    api:"http://localhost/habit_and_health_logger/server/public/review.php",
+    habits:"http://localhost/habit_and_health_logger/server/habits", 
+    advice:"http://localhost/habit_and_health_logger/server/public/advice.php"
+
 }
 const userId = localStorage.getItem("user-id");
+const login = localStorage.getItem("isLogin");
+const userRole = localStorage.getItem("userRole");
 
 function validateName (name)
 {
@@ -21,4 +25,9 @@ function validateName (name)
     }
 
     return true;
+}
+
+function validateEmail(email) {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
 }

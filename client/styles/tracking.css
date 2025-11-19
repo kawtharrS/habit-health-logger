@@ -462,3 +462,27 @@ body {
         min-width: auto;
     }
 }
+
+.back-btn {
+    position: fixed; 
+    top: 45px;
+    left: 45px;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    background-color: #041170;
+    color: white;
+    cursor: pointer;
+    z-index: 1000; 
+    transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #2d0191;
+}
+
+.back-btn a{
+    text-decoration:none;
+    color:#fff
+}

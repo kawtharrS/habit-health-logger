@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="../styles/login.css">
 </head>
 <body>
+    <button id="backBtn" class="back-btn"><a href="/client/index.html">Back</a></button>
+
     <div class="login-container">
         <div class="imgcontainer">
             <img src="../brainstorming images/avatar.png" alt="Avatar" class="avatar">
@@ -23,12 +25,18 @@
                 <input type="password" id="psw" name="psw" placeholder="Enter Password" required>
              </div>
         </div>    
+
         <div class="button-group">
-            <button type="button" class="cancelbtn" id="cancelBtn"><a href="../../index.html">Cancel</a></button>
+            <button type="button" class="cancelbtn" id="cancelBtn"><a href="/client/index.html">Cancel</a></button>
             <button type="submit" class="login-btn" id="loginBtn">Login</button>
         </div>
+
+        <!-- Registration link -->
+        <div class="register-link">
+            <p>Don't have an account? <a href="../pages/register.html">Register here</a></p>
+        </div>
     </div>
-    </div>
+
     <script src="../scripts/axios.min.js"></script>
     <script src="../scripts/global_scripts.js"></script>
     <script src="../scripts/login/login_vars.js"></script>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracking Dashboard</title>
+    <link rel="stylesheet" href="../styles/chart.css">
+</head>
+<body>
+    <button id="backBtn" class="back-btn"><a href="./tracking.html">Back</a></button>
+
+    <div class="container">
+        <header>
+            <h1>Habit Tracking Dashboard</h1>
+            <p class="subtitle">Track your habits and improve your daily routine</p>
+        </header>
+
+        <div class="dashboard">
+            <div class="rating-card">
+                <h3>Overall Rating</h3>
+                <div id="ratingContent"></div>
+                <div class="rating-label">Based on your habit entries</div>
+            </div>
+            
+            <div class="advice-card">
+                <h3>Personalized Advice</h3>
+                <div id="adviceContent"></div>
+            </div>
+        </div>
+
+        <div class="charts-section">
+            <h2 class="section-title">Weekly Habits</h2>
+            <div class="charts">
+                <div class="chart-card">
+                    <h3>Weekly Top Habit</h3>
+                    <svg id="weeklyTopHabitChart" width="500" height="400"></svg>
+                </div>
+                <div class="chart-card">
+                    <h3>All-Time Top Habit</h3>
+                    <svg id="TopHabitChart" width="500" height="400"></svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-section">
+            <h2 class="section-title">All-Time Habits</h2>
+            <div class="charts">
+                <div class="chart-card">
+                    <h3>Weekly Weak Habit</h3>
+                    <svg id="weeklyWeakHabitChart" width="500" height="400"></svg>
+                </div>
+                <div class="chart-card">
+                    <h3>All-Time Weak Habit</h3>
+                    <svg id="WeakHabitChart" width="500" height="400"></svg>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../scripts/axios.min.js"></script>
+    <script src="../scripts/global_scripts.js"></script>
+    <script src="../scripts/tracking/traking_helpers.js"></script>
+    <script src="../scripts/tracking/tracking_charts.js"></script>
+</body>
+</html>

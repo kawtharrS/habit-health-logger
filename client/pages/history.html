@@ -8,20 +8,18 @@
 </head>
 <body>
 
+    <button id="backBtn" class="back-btn"><a href="./tracking.html">Back</a></button>
     <div class="container">
-
         <h1>Chat History</h1>
-
         <div class="table-wrapper">
             <table id="historyTable">
                 <thead>
                 <tr>
                     <td data-label="Raw Text">Some user message</td>
-                    <td data-label="AI Response">AI reply here</td>
+                    <td data-label="AI Response">Top Habit</td>
+                    <td data-label="AI Response">Weak Habit</td>
+                    <td data-label="AI Response">Rating</td>
                     <td data-label="Created At">2025-11-18</td>
-                    <td data-label="Updated At">2025-11-18</td>
-                    <td data-label="Actions">Actions</td>
-
                 </tr>
                 </thead>
 
@@ -33,6 +31,7 @@
     </div>
     <script src="../scripts/axios.min.js"></script>
     <script src="../scripts/global_scripts.js"></script>
+    <script src="../scripts/history/history_vars.js"></script>
     <script src="../scripts/history/history.js"></script>
 </body>
 </html>

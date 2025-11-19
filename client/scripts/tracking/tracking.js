@@ -1,6 +1,9 @@
 let selectedHabits = {};
 let currentHabit = "";
 
+if (login !== "true") {
+    window.location.href = "not-authenticated.html"; 
+}
 function addMessage(text, type) {
     const div = document.createElement("div");
     div.classList.add("message", type === "ai" ? "bot" : "user");
@@ -20,19 +23,23 @@ async function sendMessage(habit_messages = "", habitId = null) {
         // Send message to AI
         const response = await axios.post(URLS.api, { message }, { headers: { "Content-Type": "application/json" } });
         const aiReply = response.data.reply || "";
+        const analysis= response.data.analysis || "";
         createAIMessage(aiReply);
 
         // Save entry
         const saveData = {
             user_id: userId,
             raw_text: message,
-            ai_response: aiReply
+            top_habit: analysis.top_habit,
+            weak_habit:analysis.weak_habit,
+            advice:analysis.advice,
+            rating:analysis.rating
         };
         if (habitId) saveData.habit_id = habitId;
 
         const saved = await axios.post(URLS.entries+"/create", saveData, { headers: { "Content-Type": "application/json" } });
         console.log("Saved entry:", saved.data);
-
+        
     } catch (err) {
         createAIMessage("Sorry, I could not process your request.");
         console.log("Error saving message:", err);

@@ -10,7 +10,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f5f5f5;
+    background-color: #DADDFD;
 }
 
 .login-container {
@@ -107,4 +107,48 @@ button {
         flex-direction: column;
     }
     
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.register-link a {
+    color: #4438ff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+.back-btn {
+    position: fixed; 
+    top: 20px;
+    left: 20px;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3802b8;
+    color: white;
+    cursor: pointer;
+    z-index: 1000; 
+    transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #2d0191;
+}
+.back-btn a{
+    text-decoration:none;
+    color:#fff
+}
+
+#loginBtn{
+    text-decoration:none;
+    color:#fff
 }

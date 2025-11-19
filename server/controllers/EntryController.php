@@ -59,6 +59,21 @@ class EntryController
 
         echo ResponseService::response(200, $entriesArr);
     }
+    public function getEntries()
+    {
+        $entries = Entry::findAll($this->connection); 
+        if ($entries) {
+            $result = [];
+            foreach ($entries as $entry) {
+                $result[] = $entry->toArray();
+            }
+            echo ResponseService::response(200, $result); 
+        } else {
+            echo ResponseService::response(404, []);
+        }
+    }
+
+
 
     public function insertEntry()
     {
@@ -73,8 +88,11 @@ class EntryController
             'user_id' => $input["user_id"],
             'habit_id' => $input["habit_id"] ?? null,
             'raw_text' => $input["raw_text"],
-            'ai_response' => $input["ai_response"] ?? null,
-            'created_at' => $input["created_at"] ?? null
+            'created_at' => $input["created_at"] ?? null,
+            'top_habit' =>$input["top_habit"] ?? null,
+            'weak_habit' => $input["weak_habit"] ?? null, 
+            'advice' => $input["advice"] ?? null, 
+            'rating' =>$input["rating"] ?? null
         ];
 
         $entry = Entry::create($this->connection, $data);
@@ -111,7 +129,7 @@ class EntryController
         $entry = $this->fetchEntryById($id);
         if (!$entry) return;
 
-        $fields = ['raw_text', 'ai_response', 'habit_id', 'created_at'];
+        $fields = ['raw_text', 'habit_id', 'created_at', 'top_habit', 'weak_habit', 'advice', 'rating'];
         $data = [];
 
         foreach ($fields as $field) {

@@ -8,6 +8,8 @@
 </head>
 <body>
 
+<button id="backBtn" class="back-btn"><a href="/client/index.html">Back</a></button>
+
 <div class="layout">
 
     <div class="habits-panel">
@@ -16,6 +18,7 @@
         <h4>Selected</h4>
         <div id="selectedList" class="selected-list"></div>
         <button id="sendAllHabits" class="send-all-btn">Send All Habits</button>
+        <button id="statsAllHabits" class="send-all-btn"><a href="../pages/charts.html">Overview Statistics</a></button>
         <button id="historyAllHabits" class="send-all-btn"><a href="../pages/history.html">History</a></button>
     </div>
 
@@ -55,10 +58,13 @@
 </div>
 
 <script src="../scripts/axios.min.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
 <script src="../scripts/global_scripts.js"></script>
 <script src="../scripts/tracking/tracking_vars.js"></script>
 
 <script src="../scripts/tracking/traking_helpers.js"></script>
+<script src="../scripts/tracking/tracking_charts.js"></script>
 <script src="../scripts/tracking/tracking.js"></script>
 
 <script src="../scripts/tracking/treacking_listners.js"></script>

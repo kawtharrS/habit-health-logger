@@ -8,6 +8,7 @@ body {
 .container {
     max-width: 1200px;
     margin: auto;
+    margin-top:50px;
 }
 
 h1 {
@@ -88,7 +89,6 @@ button.delete {
     }
 
     tr {
-        background: white;
         margin-bottom: 12px;
         border-radius: 8px;
         padding: 12px;
@@ -117,4 +117,26 @@ button.delete {
         width: 48%;
         font-size: 12px;
     }
+}
+.back-btn {
+    position: fixed; 
+    top: 20px;
+    left: 20px;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3802b8;
+    color: white;
+    cursor: pointer;
+    z-index: 1000; 
+    transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #2d0191;
+}
+.back-btn a{
+    text-decoration:none;
+    color:#fff
 }

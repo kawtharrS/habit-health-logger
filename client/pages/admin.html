@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../styles/admin.css">
 </head>
 <body>
+    <button id="backBtn" class="back-btn"><a href="/client/index.html">Back</a></button>
     <header>
         <h1>Admin Dashboard</h1>
     </header>
@@ -53,10 +54,34 @@
             </table>
         </section>
     </main>
+        <button id="backBtn" class="back-btn"><a href="./tracking.html">Back</a></button>
+
+    <div class="container">
+        <header>
+            <h1>Habit Tracking Dashboard</h1>
+            <p class="subtitle">Track your habits and improve your daily routine</p>
+        </header>
+        <div class="charts-section">
+            <h2 class="section-title">Weekly Habits</h2>
+            <div class="charts">
+                <div class="chart-card">
+                    <h3>All-Time Top Habit</h3>
+                    <svg id="TopHabitChart" width="500" height="400"></svg>
+                </div>
+                <div class="chart-card">
+                    <h3>All-Time Weak Habit</h3>
+                    <svg id="WeakHabitChart" width="500" height="400"></svg>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="../scripts/axios.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="../scripts/global_scripts.js"></script>
-    <script src="../scripts/admin/admin_helpers.js"></script>
+    <script src="../scripts/tracking/tracking_vars.js"></script>
+    <script src="../scripts/tracking/traking_helpers.js"></script>
+    <script src="../scripts/admin/admin_chart.js"></script>
     <script src="../scripts/admin/admin_vars.js"></script>
     <script src="../scripts/admin/admin.js"></script>
 </body>
