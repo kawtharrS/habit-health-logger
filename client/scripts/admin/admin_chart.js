@@ -2,24 +2,10 @@ if (login !== "true") {
     window.location.href = "not-authenticated.html"; 
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-    await loadAndDrawCharts();
-    getAdvice();
-    getRate();
-});
+loadAndDrawCharts();
 
 async function loadAndDrawCharts() {
-    const { weeklyTopHabitCount, weeklyWeakHabitCount, weeklyEntries } = await getWeeklyHabits();
-
-    if (weeklyEntries.length === 0) {
-        console.warn("No weekly data available to draw charts.");
-    }
-
-    drawBarChart("#weeklyTopHabitChart", weeklyTopHabitCount, "steelblue");
-    drawBarChart("#weeklyWeakHabitChart", weeklyWeakHabitCount, "steelblue");
-
-    const { allTimeTopHabitCount, allTimeWeakHabitCount } = await getAllTimeHabits();
-
+    const { allTimeTopHabitCount, allTimeWeakHabitCount } = await getAllTimeHabitsAll();
     drawBarChart("#TopHabitChart", allTimeTopHabitCount, "tomato");
     drawBarChart("#WeakHabitChart", allTimeWeakHabitCount, "tomato");
 }
@@ -73,3 +59,8 @@ function drawBarChart(svgID, dataObj, color) {
 
     g.append("g").call(d3.axisLeft(y));
 }
+
+
+
+
+

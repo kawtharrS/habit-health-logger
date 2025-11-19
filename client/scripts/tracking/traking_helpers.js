@@ -140,3 +140,23 @@ async function getAllTimeHabits() {
         console.log(error);
     }
 }
+
+async function getAllTimeHabitsAll() {
+    try {
+        const response = await axios.get(URLS.entries + "/all");
+        const entries = response.data.data;
+
+        console.log("entries",entries);
+
+        const allTimeTopHabitCount = countHabits(entries, "top_habit");
+        const allTimeWeakHabitCount = countHabits(entries, "weak_habit");
+
+        console.log(allTimeTopHabitCount);
+        console.log(allTimeWeakHabitCount);
+
+        return { allTimeTopHabitCount, allTimeWeakHabitCount, entries };
+    } catch (error) {
+        console.log(error);
+    }
+}
+

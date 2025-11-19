@@ -121,7 +121,7 @@ async function deleteUser(userId)
 
 async function updateUser(userId)
 {
-    let name = prompt("Enter you name");
+    let name = prompt("Enter a name");
     if(name === null) return;
     try{
         const response = await axios.post(URLS.users+"/update", {id:userId, name:name});

@@ -59,6 +59,21 @@ class EntryController
 
         echo ResponseService::response(200, $entriesArr);
     }
+    public function getEntries()
+    {
+        $entries = Entry::findAll($this->connection); 
+        if ($entries) {
+            $result = [];
+            foreach ($entries as $entry) {
+                $result[] = $entry->toArray();
+            }
+            echo ResponseService::response(200, $result); 
+        } else {
+            echo ResponseService::response(404, []);
+        }
+    }
+
+
 
     public function insertEntry()
     {

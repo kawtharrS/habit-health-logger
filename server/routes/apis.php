@@ -19,6 +19,7 @@ $apis = [
     '/entries/create'         => ['controller' => 'EntryController', 'method' => 'insertEntry'],
     '/entries/delete'         => ['controller' => 'EntryController', 'method' => 'deleteEntry'],
     '/entries/update'         => ['controller' => 'EntryController', 'method' => 'updateEntry'],
+    '/entries/all'            => ['controller' => 'EntryController', 'method' => 'getEntries'],
 
 ];
 
