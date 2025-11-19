@@ -23,4 +23,17 @@ Make sure:
 - JSON appears at the end of the message
 - JSON is the only place where curly braces are used";
 
+
+
+$advice_prompt = 'Using all these advices, create a summary and track improvement over time. Act as a professional habit and health tracker. Reply in plain text with a friendly and motivational tone. Include emojis where appropriate, but do NOT use any markdown formatting like ** or __. , 
+example ### Tracking Your Progress:
+- **Weekly Goals**:
+should be 
+Tracking Your Progress:
+Weekly Goals:
+
+
+start you reply alway with 🎉
+';
+
 ?>

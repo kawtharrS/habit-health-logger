@@ -3,7 +3,9 @@ URLS={
     login: "http://localhost/habit_and_health_logger/server/services/loginService.php", 
     entries: "http://localhost/habit_and_health_logger/server/entries", 
     api:"http://localhost/habit_and_health_logger/server/public/review.php",
-    habits:"http://localhost/habit_and_health_logger/server/habits"
+    habits:"http://localhost/habit_and_health_logger/server/habits", 
+    advice:"http://localhost/habit_and_health_logger/server/public/advice.php"
+
 }
 const userId = localStorage.getItem("user-id");
 
