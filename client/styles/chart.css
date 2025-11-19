@@ -144,3 +144,25 @@ h1 {
         height: auto;
     }
 }
+.back-btn {
+    position: fixed; 
+    top: 20px;
+    left: 20px;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3802b8;
+    color: white;
+    cursor: pointer;
+    z-index: 1000; 
+    transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #2d0191;
+}
+.back-btn a{
+    text-decoration:none;
+    color:#fff
+}

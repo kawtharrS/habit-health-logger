@@ -26,8 +26,18 @@ loginBtn.addEventListener("click", async () => {
         localStorage.setItem('userRole', userRole);
         console.log("User's role :", userRole);
         console.log("hi check");
+
+        let isLogin = false;
+        if (response.status === 200) 
+            isLogin=true;
+        
+        localStorage.setItem('isLogin', isLogin); 
+
+        const login = localStorage.getItem("isLogin");
+        console.log(login);
+
+
         alert("Welcome you are logged in");
-        window.location.replace("../../../index.html");
 
 
     } catch (error) {

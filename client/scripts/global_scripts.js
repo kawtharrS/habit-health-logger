@@ -8,6 +8,7 @@ URLS={
 
 }
 const userId = localStorage.getItem("user-id");
+const login = localStorage.getItem("isLogin");
 
 function validateName (name)
 {
